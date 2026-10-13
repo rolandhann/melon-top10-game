@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MELON TOP10 PICK — 멜론 차트 예측 게임</title>
+<meta name="description" content="멜론 차트에서 실시간 TOP10 진입곡을 예측하고 포인트를 베팅하는 게임">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#FFFFFF;--bg2:#F5F2FF;--surface:#FAFAFE;
+  --border:#E2DDED;--border-b:#CCC7E0;
+  --text:#12091E;--text-d:#5A5585;
+  --accent:#C8204A;--accent-lo:#FFE0E8;
+  --gold:#8B6010;--gold-lo:#FFF8E6;
+  --up:#0D8040;--paper:#FFFFFF;--paper-d:#EDE9F8;
+}
+html{font-size:15px;background:var(--bg);color:var(--text);font-family:-apple-system,'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased}
+body{min-height:100vh;max-width:600px;margin:0 auto;background:var(--bg)}
+
+/* Loading */
+.loading-screen{position:fixed;inset:0;background:#12091E;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;z-index:999}
+.loading-screen.hidden{display:none}
+.loading-logo{font-size:20px;font-weight:900;color:#fff;letter-spacing:.06em}.loading-logo em{color:#C8204A;font-style:normal}
+.loading-bar{width:200px;height:3px;background:rgba(255,255,255,.15);border-radius:2px;overflow:hidden}
+.loading-bar-inner{height:100%;width:0;background:#C8204A;border-radius:2px;animation:loadprogress 1.8s ease forwards}
+@keyframes loadprogress{0%{width:0}70%{width:85%}100%{width:100%}}
+.loading-text{font-size:12px;color:rgba(255,255,255,.45)}
+
+/* Header */
+.app-header{background:#12091E;position:sticky;top:0;z-index:100;border-bottom:1px solid #2A2040}
+.header-row{display:flex;align-items:center;justify-content:space-between;padding:12px 16px 8px}
+.game-name{font-size:18px;font-weight:900;color:#FFFFFF;letter-spacing:.05em}.game-name em{color:#C8204A;font-style:normal}
+.game-sub{font-size:11px;color:rgba(255,255,255,.45);margin-top:1px}
+.wallet-box{text-align:right}
+.wallet-num{font-family:'Courier New',monospace;font-size:24px;font-weight:700;color:#E8C26A;font-variant-numeric:tabular-nums;line-height:1}
+.wallet-lbl{font-size:10px;color:rgba(255,255,255,.45);margin-top:2px}
+.tab-strip{display:flex;border-top:1px solid rgba(255,255,255,.07)}
+.tab-btn{flex:1;padding:10px;background:transparent;border:none;color:rgba(255,255,255,.45);font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;border-bottom:2px solid transparent;transition:all .15s}
+.tab-btn.active{color:#fff;border-bottom-color:#C8204A}
+
+/* Chart type bar */
+.chart-type-bar{display:flex;gap:8px;padding:12px 14px;overflow-x:auto;background:#FAFAFE;border-bottom:1px solid var(--border);-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.chart-type-bar::-webkit-scrollbar{display:none}
+.ct-btn{padding:6px 14px;border:1.5px solid var(--border-b);background:white;color:var(--text-d);font-size:12px;font-weight:700;cursor:pointer;border-radius:20px;white-space:nowrap;transition:all .15s;font-family:inherit;flex-shrink:0;display:inline-flex;align-items:center}
+.ct-period{font-size:10px;font-weight:400;color:#8A85A8;margin-left:4px}
+.ct-btn.active{background:#C8204A;border-color:#C8204A;color:white}
+.ct-btn.active .ct-period{color:rgba(255,255,255,.75)}
+
+/* Answer bar */
+.answer-bar{display:flex;align-items:center;gap:8px;padding:8px 16px;background:#FFF8E6;border-bottom:1px solid #E8D89A;font-size:12px;color:#5A4A10}
+.answer-bar strong{color:#8B6010}.answer-icon{font-size:13px;flex-shrink:0}
+.answer-date{font-size:11px;color:#8A7040;margin-left:auto;font-variant-numeric:tabular-nums}
+
+/* Slip */
+.slip-panel{padding:12px 16px;background:#F8F5FF;border-bottom:2px solid var(--border)}
+.slip-empty{color:var(--text-d);font-size:13px;padding:4px 0}
+.slip-picks{display:flex;flex-direction:column;gap:6px;margin-bottom:8px}
+.slip-row{display:flex;align-items:center;gap:8px;font-size:13px}
+.slip-badge{background:#C8204A;color:white;font-size:10px;font-weight:700;padding:2px 7px;border-radius:12px;flex-shrink:0}
+.slip-mult{font-size:10px;font-weight:700;color:#8B6010;font-family:'Courier New',monospace;background:#FFF8E6;border:1px solid #E0D090;padding:1px 5px;border-radius:8px;flex-shrink:0}
+.slip-song{font-weight:600;color:var(--text);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.slip-remove{background:none;border:none;cursor:pointer;color:#C8204A;font-size:18px;padding:0 2px;font-family:inherit;line-height:1}
+.slip-bet-row{display:flex;align-items:center;gap:10px;margin-top:8px;flex-wrap:wrap}
+.bet-label{font-size:12px;color:var(--text-d);flex-shrink:0}
+.bet-input{border:1.5px solid var(--border-b);padding:5px 10px;font-size:14px;font-family:'Courier New',monospace;font-weight:700;color:var(--text);background:white;width:110px;border-radius:4px;font-variant-numeric:tabular-nums}
+.bet-input:focus{outline:none;border-color:#C8204A}
+.bet-info{font-size:11px;color:var(--text-d);font-variant-numeric:tabular-nums;flex:1}
+.submit-btn{display:block;width:100%;margin-top:10px;padding:11px;background:#C8204A;color:white;border:none;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:.04em;border-radius:4px;transition:background .15s}
+.submit-btn:hover:not(:disabled){background:#A8103A}
+.submit-btn:disabled{background:#CCC7E0;cursor:not-allowed}
+
+/* Chart rows */
+.chart-section-title{padding:8px 16px 4px;font-size:11px;font-weight:700;color:var(--text-d);letter-spacing:.06em;text-transform:uppercase;background:#F5F2FF;border-bottom:1px solid var(--border)}
+.chart-hint{padding:6px 16px;font-size:11px;color:var(--text-d);background:#FFF;border-bottom:1px solid var(--border)}
+.song-row{display:flex;align-items:center;gap:10px;padding:9px 16px;background:#FFFFFF;border-bottom:1px solid #F0ECF8;cursor:default;transition:background .1s}
+.song-row.bettable{cursor:pointer}
+.song-row.bettable:hover{background:#F8F5FF}
+.song-row.selected{background:#FFF0F4;border-left:3px solid #C8204A}
+.song-row.selected .s-rank{margin-left:-3px}
+.song-row.top10{background:#FFFBF0}
+.s-rank{font-family:'Courier New',monospace;font-size:15px;font-weight:700;color:#12091E;font-variant-numeric:tabular-nums;width:28px;flex-shrink:0;text-align:right}
+.song-row.top10 .s-rank{color:#8B6010;font-size:16px}
+.s-mv{width:30px;flex-shrink:0;text-align:center;font-size:11px;font-variant-numeric:tabular-nums}
+.mv-up{color:#0D8040}.mv-dn{color:#A0A0C0}.mv-new{color:#C46A00;font-weight:700;font-size:9px;letter-spacing:.03em}.mv-none{color:#D8D4F0}
+.s-info{flex:1;min-width:0}
+.s-name{font-size:14px;font-weight:600;color:#12091E;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.s-artist{font-size:11px;color:#5A5585;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mult-badge{font-size:10px;font-weight:700;color:#8B6010;background:#FFF8E6;border:1px solid #E0D090;padding:2px 6px;border-radius:10px;font-family:'Courier New',monospace;flex-shrink:0;white-space:nowrap}
+.s-check{width:22px;flex-shrink:0;text-align:center;font-size:15px;color:#C8204A}
+
+/* Result overlay */
+.result-overlay{position:fixed;inset:0;z-index:200;background:rgba(18,9,30,.8);display:flex;align-items:center;justify-content:center;padding:20px}
+.result-overlay.hidden{display:none}
+.result-card{background:white;max-width:400px;width:100%;padding:24px;box-shadow:0 20px 60px rgba(0,0,0,.3);border-radius:8px;max-height:90vh;overflow-y:auto}
+.result-title{font-size:18px;font-weight:800;color:#12091E;margin-bottom:4px;letter-spacing:-.3px}
+.result-mode-label{font-size:11px;color:#8A85A8;margin-bottom:14px}
+.result-pick-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #E2DDED}
+.result-pick-indicator{font-size:20px;flex-shrink:0}
+.result-pick-info{flex:1;min-width:0}
+.result-pick-name{font-size:13px;font-weight:600;color:#12091E;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.result-pick-artist{font-size:11px;color:#5A5585}
+.result-pick-pts{font-family:'Courier New',monospace;font-size:13px;font-weight:700;flex-shrink:0;font-variant-numeric:tabular-nums}
+.result-pick-pts.gain{color:#0D8040}.result-pick-pts.loss{color:#C8204A}
+.result-net{margin-top:14px;padding:12px;background:#F5F2FF;text-align:center;font-family:'Courier New',monospace;font-size:20px;font-weight:700;font-variant-numeric:tabular-nums;border-radius:4px}
+.result-net.positive{color:#0D8040}.result-net.negative{color:#C8204A}.result-net.zero{color:#5A5585}
+.result-net.pending{color:#C46A00;font-size:13px!important;line-height:1.6}
+.result-wallet-info{text-align:center;font-size:12px;color:#5A5585;margin-top:6px;font-variant-numeric:tabular-nums}
+.result-wallet-info strong{font-family:'Courier New',monospace;color:#8B6010}
+.result-close-btn{display:block;width:100%;margin-top:16px;padding:12px;background:#C8204A;color:white;border:none;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:.04em;border-radius:4px}
+.result-close-btn:hover{background:#A8103A}
+.result-round-label{font-size:11px;font-weight:700;color:#8A85A8;letter-spacing:.04em;padding:8px 0 4px;text-transform:uppercase}
+
+/* History */
+.history-wallet-banner{padding:16px;background:#FFF8E6;border-bottom:2px solid #E8D89A;display:flex;justify-content:space-between;align-items:center}
+.hwb-label{font-size:12px;color:#5A4A10;font-weight:600}
+.hwb-amount{font-family:'Courier New',monospace;font-size:22px;font-weight:700;color:#8B6010;font-variant-numeric:tabular-nums}
+.history-empty{padding:40px 20px;text-align:center;color:var(--text-d);font-size:14px}
+.history-card{border-bottom:6px solid #F0ECF8;padding:14px 16px;background:white}
+.hc-header{display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap}
+.hc-mode{font-size:11px;font-weight:700;background:#EDE9F8;color:#5A5585;padding:2px 8px;border-radius:12px}
+.hc-period{font-size:11px;color:#8A85A8}
+.hc-time{font-size:10px;color:#B0AACC;margin-left:auto}
+.hc-pick-row{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid #F5F2FF}
+.hc-indicator{font-size:14px;flex-shrink:0}
+.hc-name{font-size:13px;font-weight:600;color:#12091E;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hc-pts{font-family:'Courier New',monospace;font-size:12px;font-weight:700;flex-shrink:0;font-variant-numeric:tabular-nums}
+.hc-pts.gain{color:#0D8040}.hc-pts.loss{color:#C8204A}
+.hc-total{margin-top:8px;text-align:right;font-family:'Courier New',monospace;font-size:13px;font-weight:700;font-variant-numeric:tabular-nums}
+.hc-total.positive{color:#0D8040}.hc-total.negative{color:#C8204A}
+
+.tab-pane{display:none}.tab-pane.active{display:block}
+
+/* Error banner */
+.error-banner{padding:10px 16px;background:#FFF0F4;border-bottom:2px solid #F0C0CC;font-size:12px;color:#8A1030;display:none}
+</style>
+</head>
+<body>
+
+<div class="loading-screen" id="loading-screen">
+  <div class="loading-logo">MELON <em>TOP10</em> PICK</div>
+  <div class="loading-bar"><div class="loading-bar-inner"></div></div>
+  <div class="loading-text">차트 데이터 로딩 중...</div>
+</div>
+
+<div id="app" style="display:none">
+  <header class="app-header">
+    <div class="header-row">
+      <div class="brand">
+        <div class="game-name">MELON <em>TOP10</em> PICK</div>
+        <div class="game-sub" id="game-sub">멜론 차트 예측 게임</div>
+      </div>
+      <div class="wallet-box">
+        <div class="wallet-num" id="wallet-display">10,000</div>
+        <div class="wallet-lbl">보유 포인트</div>
+      </div>
+    </div>
+    <nav class="tab-strip">
+      <button class="tab-btn active" onclick="switchTab('pick')">예측하기</button>
+      <button class="tab-btn" onclick="switchTab('history')">내 기록</button>
+    </nav>
+  </header>
+
+  <div class="error-banner" id="error-banner">차트 데이터를 불러오지 못했습니다. 이전 데이터로 표시됩니다.</div>
+
+  <main>
+    <div id="pane-pick" class="tab-pane active">
+      <div class="chart-type-bar" id="chart-type-bar"></div>
+      <div class="answer-bar">
+        <span class="answer-icon">⚡</span>
+        <span>기준: <strong>실시간 TOP10</strong> — 내일 오전 자동 정산</span>
+        <span class="answer-date" id="answer-date"></span>
+      </div>
+      <div class="slip-panel">
+        <div class="slip-empty" id="slip-empty">예측 대상 곡을 선택하세요 (최대 3개)</div>
+        <div class="slip-picks" id="slip-picks" style="display:none"></div>
+        <div id="slip-bet-area" style="display:none">
+          <div class="slip-bet-row">
+            <span class="bet-label">곡당 베팅</span>
+            <input class="bet-input" id="bet-input" type="number" value="500" min="100" step="100" oninput="updateSlip()">
+            <span class="bet-info" id="bet-info"></span>
+          </div>
+          <button class="submit-btn" id="submit-btn" onclick="submitBet()" disabled>예측 제출하기</button>
+        </div>
+      </div>
+      <div id="chart-container"></div>
+    </div>
+
+    <div id="pane-history" class="tab-pane">
+      <div id="history-container"></div>
+    </div>
+  </main>
+</div>
+
+<div class="result-overlay hidden" id="result-overlay">
+  <div class="result-card">
+    <div class="result-title" id="result-title">결과 확인</div>
+    <div class="result-mode-label" id="result-mode-label"></div>
+    <div id="result-picks"></div>
+    <div class="result-net" id="result-net"></div>
+    <div class="result-wallet-info" id="result-wallet-info"></div>
+    <button class="result-close-btn" onclick="dismissResult()">확인</button>
+  </div>
+</div>
+
+<script>
+const WALLET_KEY = 'mel-v2-wallet';
+const HISTORY_KEY = 'mel-v2-history';
+const PENDING_KEY = 'mel-v3-pending';
+
+let CHART_DATE = '';
+let SONGS = [];
+let TOP10_SET = new Set();
+let CHART_MODES = {};
+let currentMode = 'daily';
+let picks = [];
+
+// ── Storage ───────────────────────────────────────────────
+function getWallet(){const v=parseInt(localStorage.getItem(WALLET_KEY));return isNaN(v)?10000:v}
+function setWallet(v){localStorage.setItem(WALLET_KEY,String(Math.max(0,v)))}
+function loadHistory(){try{return JSON.parse(localStorage.getItem(HISTORY_KEY))||[]}catch{return[]}}
+function saveHistory(h){try{localStorage.setItem(HISTORY_KEY,JSON.stringify(h))}catch{}}
+function loadPending(){try{return JSON.parse(localStorage.getItem(PENDING_KEY))||[]}catch{return[]}}
+function savePending(p){try{localStorage.setItem(PENDING_KEY,JSON.stringify(p))}catch{}}
+
+// ── Multiplier ────────────────────────────────────────────
+function getMultiplier(rank){
+  if(rank<=20)return 1.1;if(rank<=30)return 1.2;if(rank<=40)return 1.3;
+  if(rank<=50)return 1.4;if(rank<=70)return 1.5;if(rank<=90)return 2;return 3;
+}
+
+// ── Wallet display ────────────────────────────────────────
+function updateWalletDisplay(){
+  document.getElementById('wallet-display').textContent=fmt(getWallet());
+}
+
+// ── Tabs ──────────────────────────────────────────────────
+function switchTab(tab){
+  document.querySelectorAll('.tab-btn').forEach((b,i)=>{
+    b.classList.toggle('active',(i===0&&tab==='pick')||(i===1&&tab==='history'));
+  });
+  document.getElementById('pane-pick').classList.toggle('active',tab==='pick');
+  document.getElementById('pane-history').classList.toggle('active',tab==='history');
+  if(tab==='history')renderHistory();
+}
+
+// ── Mode ──────────────────────────────────────────────────
+function setMode(mode){
+  currentMode=mode;picks=[];
+  document.querySelectorAll('.ct-btn').forEach(b=>b.classList.toggle('active',b.dataset.mode===mode));
+  renderChart();updateSlip();
+}
+
+// ── Helpers ───────────────────────────────────────────────
+function fmt(n){return Math.round(n).toLocaleString('ko-KR')}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+function mvDelta(s){
+  const mv=s[3],prev=s[4];
+  if(mv==='NEW')return '<span class="mv-new">NEW</span>';
+  if(mv==='UP'&&prev>0)return `<span class="mv-up">▲${prev-s[0]>0?prev-s[0]:''}</span>`;
+  if(mv==='DOWN'&&prev>0)return `<span class="mv-dn">▼${s[0]-prev>0?s[0]-prev:''}</span>`;
+  if(mv==='UP')return '<span class="mv-up">▲</span>';
+  if(mv==='DOWN')return '<span class="mv-dn">▼</span>';
+  return '<span class="mv-none">–</span>';
+}
+
+// ── Render chart ──────────────────────────────────────────
+function renderChart(){
+  const mode=CHART_MODES[currentMode];
+  if(!mode){document.getElementById('chart-container').innerHTML='';return}
+  const songs=mode.songs,topN=mode.topN;
+  let html=`<div class="chart-section-title">🏆 ${esc(mode.label)} TOP ${topN} — ${esc(mode.period)}</div>`;
+  for(let i=0;i<Math.min(topN,songs.length);i++){
+    const s=songs[i];
+    html+=`<div class="song-row top10"><span class="s-rank">${s[0]}</span><span class="s-mv">${mvDelta(s)}</span><div class="s-info"><div class="s-name">${esc(s[1])}</div><div class="s-artist">${esc(s[2])}</div></div><span class="s-check">👑</span></div>`;
+  }
+  const bettable=songs.slice(topN);
+  if(bettable.length>0){
+    html+=`<div class="chart-section-title">🎯 예측 대상 — ${esc(mode.label)} ${topN+1}위 이하</div>`;
+    html+=`<div class="chart-hint">이 중에서 현재 실시간 TOP10에 있는 곡을 맞히세요 (최대 3개) · 내일 정산</div>`;
+    for(let i=0;i<bettable.length;i++){
+      const s=bettable[i];const idx=topN+i;const sel=picks.includes(idx);
+      const mult=getMultiplier(s[0]);
+      html+=`<div class="song-row bettable${sel?' selected':''}" id="row-${idx}" onclick="togglePick(${idx})"><span class="s-rank">${s[0]}</span><span class="s-mv">${mvDelta(s)}</span><div class="s-info"><div class="s-name">${esc(s[1])}</div><div class="s-artist">${esc(s[2])}</div></div><span class="mult-badge">×${mult}</span><span class="s-check">${sel?'✓':''}</span></div>`;
+    }
+  }
+  document.getElementById('chart-container').innerHTML=html;
+}
+
+// ── Pick toggle ───────────────────────────────────────────
+function togglePick(idx){
+  if(picks.includes(idx)){picks=picks.filter(p=>p!==idx)}
+  else{if(picks.length>=3){alert('최대 3곡까지 선택할 수 있습니다.');return}picks.push(idx)}
+  document.querySelectorAll('.song-row.bettable').forEach(row=>{
+    const ri=parseInt(row.id.replace('row-',''));
+    const sel=picks.includes(ri);
+    row.classList.toggle('selected',sel);
+    row.querySelector('.s-check').textContent=sel?'✓':'';
+  });
+  updateSlip();
+}
+
+// ── Slip ──────────────────────────────────────────────────
+function getBetValue(){const v=parseInt(document.getElementById('bet-input').value);return isNaN(v)||v<100?100:v}
+function updateSlip(){
+  const mode=CHART_MODES[currentMode];if(!mode)return;
+  const songs=mode.songs;
+  const empty=document.getElementById('slip-empty');
+  const picksEl=document.getElementById('slip-picks');
+  const betArea=document.getElementById('slip-bet-area');
+  if(picks.length===0){empty.style.display='';picksEl.style.display='none';betArea.style.display='none';return}
+  empty.style.display='none';picksEl.style.display='';betArea.style.display='';
+  const bet=getBetValue(),wallet=getWallet();
+  let html='',maxPayout=0;
+  for(const idx of picks){
+    const s=songs[idx];const mult=getMultiplier(s[0]);
+    maxPayout+=Math.floor(bet*mult);
+    html+=`<div class="slip-row"><span class="slip-badge">${s[0]}위</span><span class="slip-mult">×${mult}</span><span class="slip-song">${esc(s[1])}</span><button class="slip-remove" onclick="togglePick(${idx})">×</button></div>`;
+  }
+  picksEl.innerHTML=html;
+  const total=bet*picks.length,maxNet=maxPayout-total;
+  document.getElementById('bet-info').textContent=`베팅 ${fmt(total)}pt → 전부 적중시 +${fmt(maxNet)}pt · 보유 ${fmt(wallet)}pt`;
+  const ok=picks.length>0&&bet>0&&total<=wallet;
+  const btn=document.getElementById('submit-btn');
+  btn.disabled=!ok;
+  btn.textContent=ok?`예측 제출 (${fmt(total)}pt 베팅)`:total>wallet?'포인트 부족':'예측 제출하기';
+}
+
+// ── Submit ────────────────────────────────────────────────
+function submitBet(){
+  const mode=CHART_MODES[currentMode],songs=mode.songs;
+  const bet=getBetValue(),wallet=getWallet(),total=bet*picks.length;
+  if(total>wallet){alert('포인트가 부족합니다.');return}
+  if(picks.length===0){alert('곡을 선택하세요.');return}
+  setWallet(wallet-total);
+  const pickData=picks.map(idx=>{
+    const s=songs[idx];return{rank:s[0],name:s[1],artist:s[2],bet,mult:getMultiplier(s[0])};
+  });
+  const pending=loadPending();
+  pending.push({id:Date.now().toString(),chartDate:CHART_DATE,modeLabel:mode.label,period:mode.period,picks:pickData,totalBet:total,ts:new Date().toLocaleString('ko-KR')});
+  savePending(pending);
+  picks=[];renderChart();updateSlip();
+  showPendingConfirm(mode,pickData,total);
+  updateWalletDisplay();
+}
+
+// ── Pending confirm overlay ───────────────────────────────
+function showPendingConfirm(mode,pickData,total){
+  document.getElementById('result-title').textContent='예측 완료';
+  document.getElementById('result-mode-label').textContent=`${mode.label} (${mode.period}) — 결과 대기 중`;
+  let html='',maxNet=0;
+  for(const p of pickData){
+    const payout=Math.floor(p.bet*p.mult);maxNet+=payout-p.bet;
+    html+=`<div class="result-pick-row"><span class="result-pick-indicator">🕐</span><div class="result-pick-info"><div class="result-pick-name">${esc(p.name)}</div><div class="result-pick-artist">${p.rank}위 · 적중시 +${fmt(payout-p.bet)}pt (×${p.mult})</div></div><span class="result-pick-pts" style="color:#5A5585">-${fmt(p.bet)}pt</span></div>`;
+  }
+  document.getElementById('result-picks').innerHTML=html;
+  const netEl=document.getElementById('result-net');
+  netEl.textContent='내일 오전 차트 업데이트 시 자동으로 정산됩니다';
+  netEl.className='result-net pending';
+  document.getElementById('result-wallet-info').innerHTML=`베팅 ${fmt(total)}pt 차감 · 최대 +${fmt(maxNet)}pt 가능`;
+  document.getElementById('result-overlay').classList.remove('hidden');
+}
+
+// ── Auto-settle pending bets ──────────────────────────────
+function settlePendingBets(){
+  const pending=loadPending();
+  const toSettle=pending.filter(b=>b.chartDate<CHART_DATE);
+  const remaining=pending.filter(b=>b.chartDate>=CHART_DATE);
+  if(toSettle.length===0)return;
+  const settledRounds=[];
+  for(const bet of toSettle){
+    const results=bet.picks.map(p=>{
+      const payout=Math.floor(p.bet*p.mult);
+      const correct=TOP10_SET.has(p.name);
+      if(correct)setWallet(getWallet()+payout);
+      return{...p,correct,payout};
+    });
+    const net=results.reduce((a,r)=>a+(r.correct?r.payout-r.bet:-r.bet),0);
+    settledRounds.push({mode:bet.modeLabel,period:bet.period,bet:bet.picks[0]?.bet||0,results,net,walletAfter:getWallet(),ts:new Date().toLocaleString('ko-KR'),settledDate:CHART_DATE});
+  }
+  const h=loadHistory();h.unshift(...settledRounds);saveHistory(h);
+  savePending(remaining);
+  updateWalletDisplay();
+  if(settledRounds.length>0)showSettlementResults(settledRounds);
+}
+
+function showSettlementResults(rounds){
+  document.getElementById('result-title').textContent='베팅 결과 정산';
+  document.getElementById('result-mode-label').textContent=`${CHART_DATE} 차트 기준 자동 정산`;
+  let html='',totalNet=0;
+  for(const round of rounds){
+    html+=`<div class="result-round-label">${esc(round.mode)} (${esc(round.period)})</div>`;
+    for(const r of round.results){
+      const cls=r.correct?'gain':'loss';
+      const profit=r.payout-r.bet;
+      const pts=r.correct?`+${fmt(profit)}pt`:`-${fmt(r.bet)}pt`;
+      html+=`<div class="result-pick-row"><span class="result-pick-indicator">${r.correct?'✅':'❌'}</span><div class="result-pick-info"><div class="result-pick-name">${esc(r.name)}</div><div class="result-pick-artist">${r.correct?'진입!':'미진입'} · ${esc(r.artist)}</div></div><span class="result-pick-pts ${cls}">${pts}${r.correct?` (×${r.mult})`:''}</span></div>`;
+    }
+    totalNet+=round.net;
+  }
+  document.getElementById('result-picks').innerHTML=html;
+  const netEl=document.getElementById('result-net');
+  netEl.textContent=totalNet>0?`전체 수익 +${fmt(totalNet)}pt`:totalNet<0?`전체 손실 ${fmt(Math.abs(totalNet))}pt`:'본전';
+  netEl.className='result-net '+(totalNet>0?'positive':totalNet<0?'negative':'zero');
+  document.getElementById('result-wallet-info').innerHTML=`잔여 포인트: <strong>${fmt(getWallet())}pt</strong>`;
+  document.getElementById('result-overlay').classList.remove('hidden');
+}
+
+function dismissResult(){
+  document.getElementById('result-overlay').classList.add('hidden');
+  document.getElementById('result-title').textContent='결과 확인';
+}
+
+// ── History ───────────────────────────────────────────────
+function renderHistory(){
+  const h=loadHistory(),wallet=getWallet(),pending=loadPending();
+  const container=document.getElementById('history-container');
+  const allCount=h.length+pending.length;
+  let html=`<div class="history-wallet-banner"><div><div class="hwb-label">현재 보유 포인트</div><div class="hwb-amount">${fmt(wallet)}pt</div></div><div style="text-align:right"><div class="hwb-label">총 라운드</div><div class="hwb-amount" style="font-size:18px">${allCount}회</div></div></div>`;
+  if(allCount===0){
+    html+=`<div class="history-empty">아직 예측 기록이 없습니다.<br>차트에서 곡을 선택해 예측해보세요!</div>`;
+    container.innerHTML=html;return;
+  }
+  for(const round of pending){
+    let pHtml='',maxNet=0;
+    for(const p of round.picks){const payout=Math.floor(p.bet*p.mult);maxNet+=payout-p.bet;pHtml+=`<div class="hc-pick-row"><span class="hc-indicator">🕐</span><span class="hc-name">${esc(p.name)}</span><span class="hc-pts" style="color:#5A5585">-${fmt(p.bet)}pt</span></div>`;}
+    html+=`<div class="history-card" style="border-left:3px solid #C46A00"><div class="hc-header"><span class="hc-mode" style="background:#FFF0DC;color:#8B5010">${esc(round.modeLabel)}</span><span class="hc-period">${esc(round.period)}</span><span style="font-size:10px;background:#FFF0DC;color:#C46A00;padding:2px 6px;border-radius:8px;font-weight:700;flex-shrink:0">결과 대기중</span><span class="hc-time">${esc(round.ts)}</span></div>${pHtml}<div class="hc-total" style="color:#C46A00">최대 +${fmt(maxNet)}pt 가능</div></div>`;
+  }
+  for(const round of h){
+    let pHtml='';
+    for(const r of round.results){
+      const cls=r.correct?'gain':'loss';
+      const profit=r.payout!=null?r.payout-r.bet:r.bet;
+      const pts=r.correct?`+${fmt(profit)}pt`:`-${fmt(r.bet)}pt`;
+      const multLabel=r.correct&&r.mult?` ×${r.mult}`:'';
+      pHtml+=`<div class="hc-pick-row"><span class="hc-indicator">${r.correct?'✅':'❌'}</span><span class="hc-name">${esc(r.name)}</span><span class="hc-pts ${cls}">${pts}${multLabel}</span></div>`;
+    }
+    const netCls=round.net>0?'positive':round.net<0?'negative':'';
+    const netStr=round.net>0?`+${fmt(round.net)}pt`:`${fmt(round.net)}pt`;
+    html+=`<div class="history-card"><div class="hc-header"><span class="hc-mode">${esc(round.mode)}</span><span class="hc-period">${esc(round.period)}</span><span class="hc-time">${esc(round.ts)}</span></div>${pHtml}<div class="hc-total ${netCls}">${netStr}</div></div>`;
+  }
+  container.innerHTML=html;
+}
+
+// ── Init chart type buttons ───────────────────────────────
+function renderChartTypeBtns(){
+  const bar=document.getElementById('chart-type-bar');
+  bar.innerHTML=Object.entries(CHART_MODES).map(([key,m])=>
+    `<button class="ct-btn${key===currentMode?' active':''}" data-mode="${key}" onclick="setMode('${key}')">${esc(m.label)}<span class="ct-period">${esc(m.period)}</span></button>`
+  ).join('');
+}
+
+// ── Bootstrap: load chart-data.json ──────────────────────
+async function init(){
+  try{
+    const res=await fetch('./chart-data.json?v='+Date.now());
+    if(!res.ok)throw new Error('HTTP '+res.status);
+    const data=await res.json();
+
+    CHART_DATE=data.chartDate||'';
+    SONGS=data.songs||[];
+    TOP10_SET=new Set(SONGS.map(s=>s[1]));
+
+    CHART_MODES={
+      daily:{label:'일간',period:data.dayLabel||'오늘',songs:data.dailySongs||[],topN:10},
+      weekly:{label:'주간',period:data.weekLabel||'이번 주',songs:data.weeklySongs||[],topN:10},
+    };
+
+    // 날짜 표시
+    const kd=CHART_DATE?CHART_DATE.replace(/-/g,'.'):'';
+    document.getElementById('game-sub').textContent=`멜론 차트 예측 게임 · ${kd}`;
+    document.getElementById('answer-date').textContent=kd;
+
+  }catch(e){
+    console.warn('chart-data.json 로드 실패:', e);
+    document.getElementById('error-banner').style.display='block';
+    // 기본값으로 빈 모드 유지
+    CHART_MODES={daily:{label:'일간',period:'오늘',songs:[],topN:10},weekly:{label:'주간',period:'이번 주',songs:[],topN:10}};
+  }
+
+  renderChartTypeBtns();
+  settlePendingBets();
+  updateWalletDisplay();
+  renderChart();
+  updateSlip();
+
+  // 로딩 화면 제거
+  document.getElementById('loading-screen').classList.add('hidden');
+  document.getElementById('app').style.display='';
+}
+
+init();
+</script>
+</body>
+</html>

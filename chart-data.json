@@ -1,0 +1,42 @@
+{
+  "chartDate": "2026-10-13",
+  "dayLabel": "10월 13일",
+  "weekLabel": "10/7~10/13",
+  "updatedAt": "2026-10-13T08:00:00.000Z",
+  "songs": [
+    [1,"퇴사할게여 (Narr. 기안84)","소연 (SOYEON)","NONE",1],
+    [2,"LOVE ATTACK","RESCENE (리센느)","NONE",2],
+    [3,"꿈꾸던 어른이 되었나요?","머무르","NONE",3],
+    [4,"Deja Vu","RESCENE (리센느)","NONE",4],
+    [5,"갑자기","아이오아이 (I.O.I)","NONE",5],
+    [6,"이 밤을 빌려 말해요","PLAVE","NONE",6],
+    [7,"Pretty Girl","RESCENE (리센느)","NONE",7],
+    [8,"Star Trace","PLAVE","NONE",8],
+    [9,"REDRED","CORTIS (코르티스)","NONE",9],
+    [10,"만찬가","태연 (TAEYEON)","NONE",10]
+  ],
+  "dailySongs": [
+    [1,"퇴사할게여 (Narr. 기안84)","소연 (SOYEON)","NONE",1],[2,"LOVE ATTACK","RESCENE (리센느)","NONE",2],[3,"갑자기","아이오아이 (I.O.I)","UP",4],[4,"꿈꾸던 어른이 되었나요?","머무르","UP",6],[5,"Deja Vu","RESCENE (리센느)","DOWN",3],[6,"REDRED","CORTIS (코르티스)","UP",7],[7,"Pretty Girl","RESCENE (리센느)","DOWN",5],[8,"만찬가","태연 (TAEYEON)","UP",9],[9,"BAD","ATEEZ(에이티즈)","DOWN",8],[10,"Drowning","WOODZ","NONE",10],
+    [11,"LEMONADE","aespa","NONE",11],[12,"It′s Me","아일릿(ILLIT)","NONE",12],[13,"사랑하게 될 거야","한로로","UP",14],[14,"BiiiG","BIGBANG (빅뱅)","UP",15],[15,"Good Goodbye","화사 (HWASA)","UP",17],[16,"생각을 멈추다 보면","최유리","UP",18],[17,"노스탈지아","BIG Naughty (서동현)","DOWN",13],[18,"캐치 캐치","YENA (최예나)","DOWN",16],[19,"Popcorn","도경수(D.O.)","UP",20],[20,"RUDE!","Hearts2Hearts (하츠투하츠)","DOWN",19],
+    [21,"어떻게 이별까지 사랑하겠어, 널 사랑하는 거지","AKMU (악뮤)","UP",23],[22,"0+0","한로로","DOWN",21],[23,"Dear my crazy soulmate","아이유","DOWN",22],[24,"타임캡슐","다비치","NONE",24],[25,"기쁨, 슬픔, 아름다운 마음","AKMU (악뮤)","UP",27],[26,"너의 모든 순간","성시경","UP",29],[27,"CRASH","ALLDAY PROJECT","DOWN",26],[28,"소문의 낙원","AKMU (악뮤)","NONE",28],[29,"내게 사랑이 뭐냐고 물어본다면","로이킴","UP",34],[30,"여름아 부탁해","볼빨간사춘기","DOWN",25],
+    [31,"어제보다 슬픈 오늘","우디 (Woody)","UP",33],[32,"Skibidi","소녀시대-효리수","DOWN",30],[33,"이 별로부터","아이유","DOWN",32],[34,"Pop Off Pop Off","KiiiKiii (키키)","DOWN",31],[35,"봄 내음보다 너를","김나영","UP",37],[36,"Blue Valentine","NMIXX","NONE",36],[37,"404 (New Era)","KiiiKiii (키키)","UP",39],[38,"천상연","이창섭","UP",43],[39,"HOME SWEET HOME (feat. 태양, 대성)","G-DRAGON","DOWN",38],[40,"그대만 있다면","너드커넥션 (Nerd Connection)","UP",41],
+    [41,"Lemon Tang","Hearts2Hearts (하츠투하츠)","DOWN",35],[42,"멸종위기사랑","이찬혁","DOWN",40],[43,"toxic till the end","로제 (ROSÉ)","UP",44],[44,"Heavy Serenade","NMIXX","UP",45],[45,"BANG BANG","IVE (아이브)","DOWN",42],[46,"너에게 닿기를","10CM","UP",47],[47,"주저하는 연인들을 위해","잔나비","DOWN",46],[48,"모든 날, 모든 순간","폴킴","UP",51],[49,"모르시나요","조째즈","UP",50],[50,"한 페이지가 될 수 있게","DAY6 (데이식스)","DOWN",49],
+    [51,"소나기","이클립스 (ECLIPSE)","UP",54],[52,"청춘만화","이무진","NONE",52],[53,"뛰어(JUMP)","BLACKPINK","NONE",53],[54,"Runaway","RESCENE (리센느)","DOWN",48],[55,"Whiplash","aespa","NONE",55],[56,"이 밤을 빌려 말해요","PLAVE","UP",84],[57,"헤어지자 말해요","박재정","UP",61],[58,"HAPPY","DAY6 (데이식스)","DOWN",57],[59,"Golden","HUNTR/X 외","DOWN",56],[60,"그대 작은 나의 세상이 되어","카더가든","UP",62],
+    [61,"예뻤어","DAY6 (데이식스)","UP",63],[62,"like JENNIE","제니 (JENNIE)","UP",66],[63,"오늘만 I LOVE YOU","BOYNEXTDOOR","DOWN",60],[64,"입춘","한로로","DOWN",58],[65,"나는 반딧불","황가람","DOWN",64],[66,"Guitarist","도경수(D.O.)","DOWN",65],[67,"사랑은 늘 도망가","임영웅","DOWN",59],[68,"사랑인가 봐","멜로망스","UP",69],[69,"APT.","로제 (ROSÉ) & Bruno Mars","DOWN",68],[70,"연애의 조건 (Love Options)","베스티","DOWN",67],
+    [71,"다정히 내 이름을 부르면","경서예지 & 전건호","UP",73],[72,"청혼하지 않을 이유를 못 찾았어","이무진","DOWN",71],[73,"Love Love Love","에픽하이 (EPIK HIGH)","DOWN",70],[74,"Die With A Smile","Lady Gaga & Bruno Mars","NONE",74],[75,"Welcome to the Show","DAY6 (데이식스)","DOWN",72],[76,"Love wins all","아이유","UP",77],[77,"첫 만남은 계획대로 되지 않아","TWS (투어스)","DOWN",75],[78,"Hype Boy","NewJeans","DOWN",76],[79,"STYLE","Hearts2Hearts (하츠투하츠)","DOWN",78],[80,"Magnetic","아일릿(ILLIT)","DOWN",79],
+    [81,"Seven (feat. Latto) - Clean Ver.","정국","UP",82],[82,"사랑은 봄비처럼...이별은 겨울비처럼...","임현정","UP",83],[83,"Vitamin ME","프로미스나인","DOWN",81],[84,"REBEL HEART","IVE (아이브)","UP",85],[85,"Pinball","RESCENE (리센느)","DOWN",80],[86,"봄날","방탄소년단","UP",87],[87,"Dynamite","방탄소년단","DOWN",86],[88,"SWIM","방탄소년단","NONE",88],[89,"Star Trace","PLAVE","NEW",0],[90,"Less than a Lover","제니 (JENNIE)","DOWN",89],
+    [91,"I SPY","NCT WISH","NEW",0],[92,"FAMOUS","ALLDAY PROJECT","DOWN",91],[93,"우리들의 블루스","임영웅","DOWN",92],[94,"Flower","오반(OVAN)","DOWN",90],[95,"달리 표현할 수 없어요","로이킴","DOWN",93],[96,"순간을 영원처럼","임영웅","DOWN",95],[97,"ONE MORE TIME","ALLDAY PROJECT","DOWN",96],[98,"시작의 아이","박다혜 & 마크툽","DOWN",94],[99,"에피소드","이무진","DOWN",97],[100,"계절의 끝","박재정","DOWN",99]
+  ],
+  "weeklySongs": [
+    [1,"퇴사할게여 (Narr. 기안84)","소연 (SOYEON)","NONE",1],[2,"LOVE ATTACK","RESCENE (리센느)","NONE",2],[3,"갑자기","아이오아이 (I.O.I)","NONE",3],[4,"Deja Vu","RESCENE (리센느)","NONE",4],[5,"Pretty Girl","RESCENE (리센느)","UP",6],[6,"REDRED","CORTIS (코르티스)","DOWN",5],[7,"만찬가","태연 (TAEYEON)","UP",8],[8,"BAD","ATEEZ(에이티즈)","DOWN",7],[9,"LEMONADE","aespa","NONE",9],[10,"Drowning","WOODZ","UP",12],
+    [11,"It′s Me","아일릿(ILLIT)","NONE",11],[12,"꿈꾸던 어른이 되었나요?","머무르","UP",33],[13,"BiiiG","BIGBANG (빅뱅)","DOWN",10],[14,"사랑하게 될 거야","한로로","NONE",14],[15,"Good Goodbye","화사 (HWASA)","DOWN",13],[16,"캐치 캐치","YENA (최예나)","DOWN",15],[17,"노스탈지아","BIG Naughty (서동현)","DOWN",16],[18,"RUDE!","Hearts2Hearts (하츠투하츠)","UP",19],[19,"Popcorn","도경수(D.O.)","UP",21],[20,"생각을 멈추다 보면","최유리","UP",22],
+    [21,"Dear my crazy soulmate","아이유","DOWN",17],[22,"0+0","한로로","DOWN",20],[23,"어떻게 이별까지 사랑하겠어, 널 사랑하는 거지","AKMU (악뮤)","NONE",23],[24,"타임캡슐","다비치","NONE",24],[25,"너의 모든 순간","성시경","UP",28],[26,"기쁨, 슬픔, 아름다운 마음","AKMU (악뮤)","UP",27],[27,"여름아 부탁해","볼빨간사춘기","DOWN",25],[28,"이 별로부터","아이유","DOWN",18],[29,"Skibidi","소녀시대-효리수","DOWN",26],[30,"소문의 낙원","AKMU (악뮤)","DOWN",29],
+    [31,"내게 사랑이 뭐냐고 물어본다면","로이킴","UP",34],[32,"Pop Off Pop Off","KiiiKiii (키키)","DOWN",30],[33,"어제보다 슬픈 오늘","우디 (Woody)","DOWN",32],[34,"Lemon Tang","Hearts2Hearts (하츠투하츠)","DOWN",31],[35,"Blue Valentine","NMIXX","UP",37],[36,"봄 내음보다 너를","김나영","UP",41],[37,"HOME SWEET HOME (feat. 태양, 대성)","G-DRAGON","DOWN",36],[38,"404 (New Era)","KiiiKiii (키키)","DOWN",35],[39,"천상연","이창섭","DOWN",38],[40,"그대만 있다면","너드커넥션 (Nerd Connection)","DOWN",39],
+    [41,"CRASH","ALLDAY PROJECT","UP",84],[42,"BANG BANG","IVE (아이브)","DOWN",40],[43,"toxic till the end","로제 (ROSÉ)","DOWN",42],[44,"멸종위기사랑","이찬혁","DOWN",43],[45,"너에게 닿기를","10CM","DOWN",44],[46,"모르시나요","조째즈","DOWN",45],[47,"주저하는 연인들을 위해","잔나비","UP",48],[48,"모든 날, 모든 순간","폴킴","DOWN",47],[49,"한 페이지가 될 수 있게","DAY6 (데이식스)","DOWN",46],[50,"뛰어(JUMP)","BLACKPINK","DOWN",49],
+    [51,"소나기","이클립스 (ECLIPSE)","DOWN",50],[52,"청춘만화","이무진","NONE",52],[53,"Heavy Serenade","NMIXX","UP",57],[54,"Runaway","RESCENE (리센느)","UP",55],[55,"Whiplash","aespa","DOWN",51],[56,"Golden","HUNTR/X 외","DOWN",54],[57,"HAPPY","DAY6 (데이식스)","DOWN",56],[58,"헤어지자 말해요","박재정","UP",64],[59,"사랑은 늘 도망가","임영웅","DOWN",53],[60,"오늘만 I LOVE YOU","BOYNEXTDOOR","DOWN",58],
+    [61,"그대 작은 나의 세상이 되어","카더가든","DOWN",60],[62,"예뻤어","DAY6 (데이식스)","NONE",62],[63,"입춘","한로로","UP",65],[64,"나는 반딧불","황가람","DOWN",61],[65,"Guitarist","도경수(D.O.)","DOWN",59],[66,"like JENNIE","제니 (JENNIE)","DOWN",63],[67,"APT.","로제 (ROSÉ) & Bruno Mars","DOWN",66],[68,"사랑인가 봐","멜로망스","DOWN",67],[69,"Die With A Smile","Lady Gaga & Bruno Mars","NONE",69],[70,"청혼하지 않을 이유를 못 찾았어","이무진","UP",73],
+    [71,"다정히 내 이름을 부르면","경서예지 & 전건호","DOWN",70],[72,"Welcome to the Show","DAY6 (데이식스)","DOWN",71],[73,"Love wins all","아이유","DOWN",68],[74,"Love Love Love","에픽하이 (EPIK HIGH)","NONE",74],[75,"첫 만남은 계획대로 되지 않아","TWS (투어스)","DOWN",72],[76,"Hype Boy","NewJeans","DOWN",75],[77,"STYLE","Hearts2Hearts (하츠투하츠)","NONE",77],[78,"연애의 조건 (Love Options)","베스티","UP",87],[79,"Magnetic","아일릿(ILLIT)","DOWN",76],[80,"Seven (feat. Latto) - Clean Ver.","정국","DOWN",78],
+    [81,"Vitamin ME","프로미스나인","DOWN",79],[82,"사랑은 봄비처럼...이별은 겨울비처럼...","임현정","DOWN",80],[83,"REBEL HEART","IVE (아이브)","DOWN",82],[84,"Dynamite","방탄소년단","DOWN",83],[85,"봄날","방탄소년단","UP",86],[86,"SWIM","방탄소년단","DOWN",85],[87,"Less than a Lover","제니 (JENNIE)","DOWN",81],[88,"이 밤을 빌려 말해요","PLAVE","UP",89],[89,"우리들의 블루스","임영웅","DOWN",88],[90,"Pinball","RESCENE (리센느)","NEW",0],
+    [91,"FAMOUS","ALLDAY PROJECT","NONE",91],[92,"Flower","오반(OVAN)","NONE",92],[93,"달리 표현할 수 없어요","로이킴","UP",95],[94,"순간을 영원처럼","임영웅","DOWN",90],[95,"시작의 아이","박다혜 & 마크툽","UP",96],[96,"또또","임영웅","DOWN",93],[97,"에피소드","이무진","NONE",97],[98,"ONE MORE TIME","ALLDAY PROJECT","NONE",98],[99,"Surfin' Boy","Red Velvet (레드벨벳)","DOWN",94],[100,"I AM","IVE (아이브)","DOWN",99]
+  ]
+}
