@@ -1,66 +1,67 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>MELON TOP10 PICK — 멜론 차트 예측 게임</title>
-<meta name="description" content="멜론 차트에서 실시간 TOP10 진입곡을 예측하고 포인트를 베팅하는 게임">
+
+<title>MELON GAME HUB — 멜론 예측 게임</title>
+<meta name="description" content="멜론 차트 TOP10 예측 · 신곡 TOP100 도전 게임">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#FFFFFF;--bg2:#F5F2FF;--surface:#FAFAFE;
-  --border:#E2DDED;--border-b:#CCC7E0;
-  --text:#12091E;--text-d:#5A5585;
-  --accent:#C8204A;--accent-lo:#FFE0E8;
-  --gold:#8B6010;--gold-lo:#FFF8E6;
-  --up:#0D8040;--paper:#FFFFFF;--paper-d:#EDE9F8;
-}
+:root{--bg:#FFFFFF;--bg2:#F5F2FF;--surface:#FAFAFE;--border:#E2DDED;--border-b:#CCC7E0;--text:#12091E;--text-d:#5A5585;--accent:#C8204A;--accent-lo:#FFE0E8;--gold:#8B6010;--gold-lo:#FFF8E6;--up:#0D8040}
 html{font-size:15px;background:var(--bg);color:var(--text);font-family:-apple-system,'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased}
 body{min-height:100vh;max-width:600px;margin:0 auto;background:var(--bg)}
+.screen{display:none}.screen.active{display:block}
 
-/* Loading */
-.loading-screen{position:fixed;inset:0;background:#12091E;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;z-index:999}
-.loading-screen.hidden{display:none}
-.loading-logo{font-size:20px;font-weight:900;color:#fff;letter-spacing:.06em}.loading-logo em{color:#C8204A;font-style:normal}
-.loading-bar{width:200px;height:3px;background:rgba(255,255,255,.15);border-radius:2px;overflow:hidden}
-.loading-bar-inner{height:100%;width:0;background:#C8204A;border-radius:2px;animation:loadprogress 1.8s ease forwards}
-@keyframes loadprogress{0%{width:0}70%{width:85%}100%{width:100%}}
-.loading-text{font-size:12px;color:rgba(255,255,255,.45)}
+/* HOME */
+.home-wrap{min-height:100vh;display:flex;flex-direction:column;background:#12091E}
+.home-header{padding:32px 20px 20px;text-align:center}
+.home-logo{font-size:26px;font-weight:900;color:#fff;letter-spacing:.06em}
+.home-logo em{color:#C8204A;font-style:normal}
+.home-sub{font-size:12px;color:rgba(255,255,255,.45);margin-top:4px}
+.home-wallet{margin-top:12px;display:inline-block;background:rgba(255,255,255,.08);padding:6px 18px;border-radius:20px;font-size:13px;color:#E8C26A;font-weight:700;font-family:'Courier New',monospace;font-variant-numeric:tabular-nums}
+.home-cards{padding:0 16px;display:flex;flex-direction:column;gap:14px;flex:1}
+.game-card{background:#1E1430;border:1px solid #2A2040;border-radius:12px;padding:22px 20px;cursor:pointer;transition:background .15s;-webkit-tap-highlight-color:transparent}
+.game-card:hover{background:#261A3C}
+.game-card-icon{font-size:32px;margin-bottom:10px}
+.game-card-title{font-size:19px;font-weight:800;color:#fff;margin-bottom:6px}
+.game-card-title em{color:#C8204A;font-style:normal}
+.game-card-desc{font-size:12px;color:rgba(255,255,255,.5);line-height:1.6;margin-bottom:14px}
+.game-card-tag{display:inline-block;font-size:11px;font-weight:700;padding:3px 10px;border-radius:12px;margin-right:6px}
+.tag-instant{background:#FFE0E8;color:#C8204A}
+.tag-7day{background:#E0F0FF;color:#1060C0}
+.game-card-btn{display:block;width:100%;margin-top:16px;padding:11px;background:#C8204A;color:white;border:none;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;border-radius:6px;letter-spacing:.04em}
+.home-footer{padding:20px;text-align:center;font-size:11px;color:rgba(255,255,255,.25)}
 
-/* Header */
+/* SHARED HEADER */
 .app-header{background:#12091E;position:sticky;top:0;z-index:100;border-bottom:1px solid #2A2040}
-.header-row{display:flex;align-items:center;justify-content:space-between;padding:12px 16px 8px}
-.game-name{font-size:18px;font-weight:900;color:#FFFFFF;letter-spacing:.05em}.game-name em{color:#C8204A;font-style:normal}
-.game-sub{font-size:11px;color:rgba(255,255,255,.45);margin-top:1px}
-.wallet-box{text-align:right}
-.wallet-num{font-family:'Courier New',monospace;font-size:24px;font-weight:700;color:#E8C26A;font-variant-numeric:tabular-nums;line-height:1}
-.wallet-lbl{font-size:10px;color:rgba(255,255,255,.45);margin-top:2px}
+.header-row{display:flex;align-items:center;gap:10px;padding:12px 16px 8px}
+.back-btn{background:none;border:none;color:rgba(255,255,255,.6);font-size:20px;cursor:pointer;padding:0 4px;line-height:1;flex-shrink:0}
+.back-btn:hover{color:#fff}
+.brand{flex:1;min-width:0}
+.game-name{font-size:16px;font-weight:900;color:#fff;letter-spacing:.05em}
+.game-name em{color:#C8204A;font-style:normal}
+.game-sub{font-size:10px;color:rgba(255,255,255,.4);margin-top:1px}
+.wallet-box{text-align:right;flex-shrink:0}
+.wallet-num{font-family:'Courier New',monospace;font-size:20px;font-weight:700;color:#E8C26A;font-variant-numeric:tabular-nums;line-height:1}
+.wallet-lbl{font-size:10px;color:rgba(255,255,255,.4);margin-top:2px}
 .tab-strip{display:flex;border-top:1px solid rgba(255,255,255,.07)}
 .tab-btn{flex:1;padding:10px;background:transparent;border:none;color:rgba(255,255,255,.45);font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;border-bottom:2px solid transparent;transition:all .15s}
 .tab-btn.active{color:#fff;border-bottom-color:#C8204A}
+.tab-pane{display:none}.tab-pane.active{display:block}
 
-/* Chart type bar */
+/* GAME1 STYLES */
 .chart-type-bar{display:flex;gap:8px;padding:12px 14px;overflow-x:auto;background:#FAFAFE;border-bottom:1px solid var(--border);-webkit-overflow-scrolling:touch;scrollbar-width:none}
 .chart-type-bar::-webkit-scrollbar{display:none}
 .ct-btn{padding:6px 14px;border:1.5px solid var(--border-b);background:white;color:var(--text-d);font-size:12px;font-weight:700;cursor:pointer;border-radius:20px;white-space:nowrap;transition:all .15s;font-family:inherit;flex-shrink:0;display:inline-flex;align-items:center}
 .ct-period{font-size:10px;font-weight:400;color:#8A85A8;margin-left:4px}
 .ct-btn.active{background:#C8204A;border-color:#C8204A;color:white}
 .ct-btn.active .ct-period{color:rgba(255,255,255,.75)}
-
-/* Answer bar */
 .answer-bar{display:flex;align-items:center;gap:8px;padding:8px 16px;background:#FFF8E6;border-bottom:1px solid #E8D89A;font-size:12px;color:#5A4A10}
-.answer-bar strong{color:#8B6010}.answer-icon{font-size:13px;flex-shrink:0}
-.answer-date{font-size:11px;color:#8A7040;margin-left:auto;font-variant-numeric:tabular-nums}
-
-/* Slip */
+.answer-bar strong{color:#8B6010}
 .slip-panel{padding:12px 16px;background:#F8F5FF;border-bottom:2px solid var(--border)}
 .slip-empty{color:var(--text-d);font-size:13px;padding:4px 0}
 .slip-picks{display:flex;flex-direction:column;gap:6px;margin-bottom:8px}
 .slip-row{display:flex;align-items:center;gap:8px;font-size:13px}
 .slip-badge{background:#C8204A;color:white;font-size:10px;font-weight:700;padding:2px 7px;border-radius:12px;flex-shrink:0}
-.slip-mult{font-size:10px;font-weight:700;color:#8B6010;font-family:'Courier New',monospace;background:#FFF8E6;border:1px solid #E0D090;padding:1px 5px;border-radius:8px;flex-shrink:0}
 .slip-song{font-weight:600;color:var(--text);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .slip-remove{background:none;border:none;cursor:pointer;color:#C8204A;font-size:18px;padding:0 2px;font-family:inherit;line-height:1}
+.slip-mult{font-size:10px;font-weight:700;color:#8B6010;font-family:'Courier New',monospace;background:#FFF8E6;border:1px solid #E0D090;padding:1px 5px;border-radius:8px;flex-shrink:0}
 .slip-bet-row{display:flex;align-items:center;gap:10px;margin-top:8px;flex-wrap:wrap}
 .bet-label{font-size:12px;color:var(--text-d);flex-shrink:0}
 .bet-input{border:1.5px solid var(--border-b);padding:5px 10px;font-size:14px;font-family:'Courier New',monospace;font-weight:700;color:var(--text);background:white;width:110px;border-radius:4px;font-variant-numeric:tabular-nums}
@@ -69,11 +70,9 @@ body{min-height:100vh;max-width:600px;margin:0 auto;background:var(--bg)}
 .submit-btn{display:block;width:100%;margin-top:10px;padding:11px;background:#C8204A;color:white;border:none;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:.04em;border-radius:4px;transition:background .15s}
 .submit-btn:hover:not(:disabled){background:#A8103A}
 .submit-btn:disabled{background:#CCC7E0;cursor:not-allowed}
-
-/* Chart rows */
 .chart-section-title{padding:8px 16px 4px;font-size:11px;font-weight:700;color:var(--text-d);letter-spacing:.06em;text-transform:uppercase;background:#F5F2FF;border-bottom:1px solid var(--border)}
-.chart-hint{padding:6px 16px;font-size:11px;color:var(--text-d);background:#FFF;border-bottom:1px solid var(--border)}
-.song-row{display:flex;align-items:center;gap:10px;padding:9px 16px;background:#FFFFFF;border-bottom:1px solid #F0ECF8;cursor:default;transition:background .1s}
+.chart-hint{padding:6px 16px;font-size:11px;color:var(--text-d);background:#fff;border-bottom:1px solid var(--border)}
+.song-row{display:flex;align-items:center;gap:10px;padding:9px 16px;background:#fff;border-bottom:1px solid #F0ECF8;cursor:default;transition:background .1s}
 .song-row.bettable{cursor:pointer}
 .song-row.bettable:hover{background:#F8F5FF}
 .song-row.selected{background:#FFF0F4;border-left:3px solid #C8204A}
@@ -86,14 +85,47 @@ body{min-height:100vh;max-width:600px;margin:0 auto;background:var(--bg)}
 .s-info{flex:1;min-width:0}
 .s-name{font-size:14px;font-weight:600;color:#12091E;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .s-artist{font-size:11px;color:#5A5585;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.mult-badge{font-size:10px;font-weight:700;color:#8B6010;background:#FFF8E6;border:1px solid #E0D090;padding:2px 6px;border-radius:10px;font-family:'Courier New',monospace;flex-shrink:0;white-space:nowrap}
 .s-check{width:22px;flex-shrink:0;text-align:center;font-size:15px;color:#C8204A}
+.mult-badge{font-size:10px;font-weight:700;color:#8B6010;background:#FFF8E6;border:1px solid #E0D090;padding:2px 6px;border-radius:10px;font-family:'Courier New',monospace;flex-shrink:0;white-space:nowrap}
 
-/* Result overlay */
+/* GAME2 STYLES */
+.g2-info-bar{padding:10px 16px;background:#E8F0FF;border-bottom:1px solid #C0D0F0;font-size:12px;color:#1050A0;line-height:1.5}
+.g2-slip{padding:12px 16px;background:#F8F5FF;border-bottom:2px solid var(--border)}
+.g2-slip-empty{color:var(--text-d);font-size:13px;padding:4px 0}
+.g2-picks-list{display:flex;flex-direction:column;gap:10px;margin-bottom:10px}
+.g2-pick-card{background:white;border:1.5px solid var(--border-b);border-radius:8px;padding:10px 12px}
+.g2-pick-top{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.g2-pick-num{background:#1060C0;color:white;font-size:10px;font-weight:700;padding:2px 7px;border-radius:12px;flex-shrink:0}
+.g2-pick-name{font-size:13px;font-weight:700;color:var(--text);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.g2-pick-artist{font-size:11px;color:var(--text-d);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.g2-pick-remove{background:none;border:none;cursor:pointer;color:#C8204A;font-size:18px;padding:0;font-family:inherit;line-height:1;flex-shrink:0}
+.g2-pred-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.g2-toggle-group{display:flex;gap:4px;flex-shrink:0}
+.g2-toggle{padding:4px 12px;border:1.5px solid var(--border-b);background:white;color:var(--text-d);font-size:12px;font-weight:700;cursor:pointer;border-radius:20px;font-family:inherit;transition:all .15s}
+.g2-toggle.active-yes{background:#1060C0;border-color:#1060C0;color:white}
+.g2-toggle.active-no{background:#5A5585;border-color:#5A5585;color:white}
+.g2-rank-wrap{display:flex;align-items:center;gap:4px;flex-shrink:0}
+.g2-rank-input{width:64px;border:1.5px solid var(--border-b);padding:4px 8px;font-size:13px;font-family:'Courier New',monospace;font-weight:700;color:var(--text);background:white;border-radius:4px;font-variant-numeric:tabular-nums;text-align:center}
+.g2-rank-input:focus{outline:none;border-color:#1060C0}
+.g2-rank-lbl{font-size:12px;color:var(--text-d)}
+.g2-payout-lbl{font-size:11px;color:#1060C0;font-weight:700;margin-left:auto;white-space:nowrap}
+.g2-songs-section{padding:8px 16px 4px;font-size:11px;font-weight:700;color:var(--text-d);letter-spacing:.06em;text-transform:uppercase;background:#F5F2FF;border-bottom:1px solid var(--border);border-top:1px solid var(--border)}
+.g2-song-row{display:flex;align-items:center;gap:10px;padding:9px 16px;background:#fff;border-bottom:1px solid #F0ECF8;cursor:pointer;transition:background .1s;-webkit-tap-highlight-color:transparent}
+.g2-song-row:hover{background:#F8F5FF}
+.g2-song-row.g2-selected{background:#EEF4FF;border-left:3px solid #1060C0}
+.g2-song-row.g2-selected .g2-sr-num{margin-left:-3px}
+.g2-sr-num{width:22px;text-align:center;flex-shrink:0}
+.g2-sr-check{font-size:16px;color:#1060C0}
+.g2-sr-info{flex:1;min-width:0}
+.g2-sr-name{font-size:14px;font-weight:600;color:#12091E;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.g2-sr-sub{font-size:11px;color:#5A5585;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.g2-sr-new{font-size:10px;font-weight:700;color:#C46A00;background:#FFF0DC;padding:2px 6px;border-radius:10px;flex-shrink:0;white-space:nowrap}
+
+/* SHARED RESULT / HISTORY */
 .result-overlay{position:fixed;inset:0;z-index:200;background:rgba(18,9,30,.8);display:flex;align-items:center;justify-content:center;padding:20px}
 .result-overlay.hidden{display:none}
 .result-card{background:white;max-width:400px;width:100%;padding:24px;box-shadow:0 20px 60px rgba(0,0,0,.3);border-radius:8px;max-height:90vh;overflow-y:auto}
-.result-title{font-size:18px;font-weight:800;color:#12091E;margin-bottom:4px;letter-spacing:-.3px}
+.result-title{font-size:18px;font-weight:800;color:#12091E;margin-bottom:4px}
 .result-mode-label{font-size:11px;color:#8A85A8;margin-bottom:14px}
 .result-pick-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #E2DDED}
 .result-pick-indicator{font-size:20px;flex-shrink:0}
@@ -104,14 +136,12 @@ body{min-height:100vh;max-width:600px;margin:0 auto;background:var(--bg)}
 .result-pick-pts.gain{color:#0D8040}.result-pick-pts.loss{color:#C8204A}
 .result-net{margin-top:14px;padding:12px;background:#F5F2FF;text-align:center;font-family:'Courier New',monospace;font-size:20px;font-weight:700;font-variant-numeric:tabular-nums;border-radius:4px}
 .result-net.positive{color:#0D8040}.result-net.negative{color:#C8204A}.result-net.zero{color:#5A5585}
-.result-net.pending{color:#C46A00;font-size:13px!important;line-height:1.6}
+.result-net.pending{color:#C46A00;font-size:13px!important;line-height:1.4}
 .result-wallet-info{text-align:center;font-size:12px;color:#5A5585;margin-top:6px;font-variant-numeric:tabular-nums}
 .result-wallet-info strong{font-family:'Courier New',monospace;color:#8B6010}
+.result-round-label{font-size:11px;font-weight:700;color:#8A85A8;letter-spacing:.04em;padding:8px 0 4px;text-transform:uppercase}
 .result-close-btn{display:block;width:100%;margin-top:16px;padding:12px;background:#C8204A;color:white;border:none;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:.04em;border-radius:4px}
 .result-close-btn:hover{background:#A8103A}
-.result-round-label{font-size:11px;font-weight:700;color:#8A85A8;letter-spacing:.04em;padding:8px 0 4px;text-transform:uppercase}
-
-/* History */
 .history-wallet-banner{padding:16px;background:#FFF8E6;border-bottom:2px solid #E8D89A;display:flex;justify-content:space-between;align-items:center}
 .hwb-label{font-size:12px;color:#5A4A10;font-weight:600}
 .hwb-amount{font-family:'Courier New',monospace;font-size:22px;font-weight:700;color:#8B6010;font-variant-numeric:tabular-nums}
@@ -128,70 +158,231 @@ body{min-height:100vh;max-width:600px;margin:0 auto;background:var(--bg)}
 .hc-pts.gain{color:#0D8040}.hc-pts.loss{color:#C8204A}
 .hc-total{margin-top:8px;text-align:right;font-family:'Courier New',monospace;font-size:13px;font-weight:700;font-variant-numeric:tabular-nums}
 .hc-total.positive{color:#0D8040}.hc-total.negative{color:#C8204A}
-
-.tab-pane{display:none}.tab-pane.active{display:block}
-
-/* Error banner */
-.error-banner{padding:10px 16px;background:#FFF0F4;border-bottom:2px solid #F0C0CC;font-size:12px;color:#8A1030;display:none}
 </style>
-</head>
-<body>
 
-<div class="loading-screen" id="loading-screen">
-  <div class="loading-logo">MELON <em>TOP10</em> PICK</div>
-  <div class="loading-bar"><div class="loading-bar-inner"></div></div>
-  <div class="loading-text">차트 데이터 로딩 중...</div>
+<script>
+// ===== CHART DATA (Game1) =====
+const CHART_DATE = '2026-10-13';
+const SONGS = [
+  [1,"퇴사할게여 (Narr. 기안84)","소연 (SOYEON)","NONE",1],
+  [2,"LOVE ATTACK","RESCENE (리센느)","NONE",2],
+  [3,"꿈꾸던 어른이 되었나요?","머무르","NONE",3],
+  [4,"Deja Vu","RESCENE (리센느)","NONE",4],
+  [5,"갑자기","아이오아이 (I.O.I)","NONE",5],
+  [6,"이 밤을 빌려 말해요","PLAVE","NONE",6],
+  [7,"Pretty Girl","RESCENE (리센느)","NONE",7],
+  [8,"Star Trace","PLAVE","NONE",8],
+  [9,"REDRED","CORTIS (코르티스)","NONE",9],
+  [10,"만찬가","태연 (TAEYEON)","NONE",10],
+];
+const TOP10_SET = new Set(SONGS.map(s=>s[1]));
+const DAILY_SONGS = [
+  [1,"퇴사할게여 (Narr. 기안84)","소연 (SOYEON)","NONE",1],[2,"LOVE ATTACK","RESCENE (리센느)","NONE",2],[3,"갑자기","아이오아이 (I.O.I)","UP",4],[4,"꿈꾸던 어른이 되었나요?","머무르","UP",6],[5,"Deja Vu","RESCENE (리센느)","DOWN",3],[6,"REDRED","CORTIS (코르티스)","UP",7],[7,"Pretty Girl","RESCENE (리센느)","DOWN",5],[8,"만찬가","태연 (TAEYEON)","UP",9],[9,"BAD","ATEEZ(에이티즈)","DOWN",8],[10,"Drowning","WOODZ","NONE",10],
+  [11,"LEMONADE","aespa","NONE",11],[12,"It′s Me","아일릿(ILLIT)","NONE",12],[13,"사랑하게 될 거야","한로로","UP",14],[14,"BiiiG","BIGBANG (빅뱅)","UP",15],[15,"Good Goodbye","화사 (HWASA)","UP",17],[16,"생각을 멈추다 보면","최유리","UP",18],[17,"노스탈지아","BIG Naughty (서동현)","DOWN",13],[18,"캐치 캐치","YENA (최예나)","DOWN",16],[19,"Popcorn","도경수(D.O.)","UP",20],[20,"RUDE!","Hearts2Hearts (하츠투하츠)","DOWN",19],
+  [21,"어떻게 이별까지 사랑하겠어, 널 사랑하는 거지","AKMU (악뮤)","UP",23],[22,"0+0","한로로","DOWN",21],[23,"Dear my crazy soulmate","아이유","DOWN",22],[24,"타임캡슐","다비치","NONE",24],[25,"기쁨, 슬픔, 아름다운 마음","AKMU (악뮤)","UP",27],[26,"너의 모든 순간","성시경","UP",29],[27,"CRASH","ALLDAY PROJECT","DOWN",26],[28,"소문의 낙원","AKMU (악뮤)","NONE",28],[29,"내게 사랑이 뭐냐고 물어본다면","로이킴","UP",34],[30,"여름아 부탁해","볼빨간사춘기","DOWN",25],
+  [31,"어제보다 슬픈 오늘","우디 (Woody)","UP",33],[32,"Skibidi","소녀시대-효리수","DOWN",30],[33,"이 별로부터","아이유","DOWN",32],[34,"Pop Off Pop Off","KiiiKiii (키키)","DOWN",31],[35,"봄 내음보다 너를","김나영","UP",37],[36,"Blue Valentine","NMIXX","NONE",36],[37,"404 (New Era)","KiiiKiii (키키)","UP",39],[38,"천상연","이창섭","UP",43],[39,"HOME SWEET HOME (feat. 태양, 대성)","G-DRAGON","DOWN",38],[40,"그대만 있다면","너드커넥션 (Nerd Connection)","UP",41],
+  [41,"Lemon Tang","Hearts2Hearts (하츠투하츠)","DOWN",35],[42,"멸종위기사랑","이찬혁","DOWN",40],[43,"toxic till the end","로제 (ROSÉ)","UP",44],[44,"Heavy Serenade","NMIXX","UP",45],[45,"BANG BANG","IVE (아이브)","DOWN",42],[46,"너에게 닿기를","10CM","UP",47],[47,"주저하는 연인들을 위해","잔나비","DOWN",46],[48,"모든 날, 모든 순간","폴킴","UP",51],[49,"모르시나요","조째즈","UP",50],[50,"한 페이지가 될 수 있게","DAY6 (데이식스)","DOWN",49],
+  [51,"소나기","이클립스 (ECLIPSE)","UP",54],[52,"청춘만화","이무진","NONE",52],[53,"뛰어(JUMP)","BLACKPINK","NONE",53],[54,"Runaway","RESCENE (리센느)","DOWN",48],[55,"Whiplash","aespa","NONE",55],[56,"이 밤을 빌려 말해요","PLAVE","UP",84],[57,"헤어지자 말해요","박재정","UP",61],[58,"HAPPY","DAY6 (데이식스)","DOWN",57],[59,"Golden","HUNTR/X 외","DOWN",56],[60,"그대 작은 나의 세상이 되어","카더가든","UP",62],
+  [61,"예뻤어","DAY6 (데이식스)","UP",63],[62,"like JENNIE","제니 (JENNIE)","UP",66],[63,"오늘만 I LOVE YOU","BOYNEXTDOOR","DOWN",60],[64,"입춘","한로로","DOWN",58],[65,"나는 반딧불","황가람","DOWN",64],[66,"Guitarist","도경수(D.O.)","DOWN",65],[67,"사랑은 늘 도망가","임영웅","DOWN",59],[68,"사랑인가 봐","멜로망스","UP",69],[69,"APT.","로제 (ROSÉ) & Bruno Mars","DOWN",68],[70,"연애의 조건 (Love Options)","베스티","DOWN",67],
+  [71,"다정히 내 이름을 부르면","경서예지 & 전건호","UP",73],[72,"청혼하지 않을 이유를 못 찾았어","이무진","DOWN",71],[73,"Love Love Love","에픽하이 (EPIK HIGH)","DOWN",70],[74,"Die With A Smile","Lady Gaga & Bruno Mars","NONE",74],[75,"Welcome to the Show","DAY6 (데이식스)","DOWN",72],[76,"Love wins all","아이유","UP",77],[77,"첫 만남은 계획대로 되지 않아","TWS (투어스)","DOWN",75],[78,"Hype Boy","NewJeans","DOWN",76],[79,"STYLE","Hearts2Hearts (하츠투하츠)","DOWN",78],[80,"Magnetic","아일릿(ILLIT)","DOWN",79],
+  [81,"Seven (feat. Latto) - Clean Ver.","정국","UP",82],[82,"사랑은 봄비처럼...이별은 겨울비처럼...","임현정","UP",83],[83,"Vitamin ME","프로미스나인","DOWN",81],[84,"REBEL HEART","IVE (아이브)","UP",85],[85,"Pinball","RESCENE (리센느)","DOWN",80],[86,"봄날","방탄소년단","UP",87],[87,"Dynamite","방탄소년단","DOWN",86],[88,"SWIM","방탄소년단","NONE",88],[89,"Star Trace","PLAVE","NEW",0],[90,"Less than a Lover","제니 (JENNIE)","DOWN",89],
+  [91,"I SPY","NCT WISH","NEW",0],[92,"FAMOUS","ALLDAY PROJECT","DOWN",91],[93,"우리들의 블루스","임영웅","DOWN",92],[94,"Flower","오반(OVAN)","DOWN",90],[95,"달리 표현할 수 없어요","로이킴","DOWN",93],[96,"순간을 영원처럼","임영웅","DOWN",95],[97,"ONE MORE TIME","ALLDAY PROJECT","DOWN",96],[98,"시작의 아이","박다혜 & 마크툽","DOWN",94],[99,"에피소드","이무진","DOWN",97],[100,"계절의 끝","박재정","DOWN",99],
+];
+const WEEKLY_SONGS = [
+  [1,"퇴사할게여 (Narr. 기안84)","소연 (SOYEON)","NONE",1],[2,"LOVE ATTACK","RESCENE (리센느)","NONE",2],[3,"갑자기","아이오아이 (I.O.I)","NONE",3],[4,"Deja Vu","RESCENE (리센느)","NONE",4],[5,"Pretty Girl","RESCENE (리센느)","UP",6],[6,"REDRED","CORTIS (코르티스)","DOWN",5],[7,"만찬가","태연 (TAEYEON)","UP",8],[8,"BAD","ATEEZ(에이티즈)","DOWN",7],[9,"LEMONADE","aespa","NONE",9],[10,"Drowning","WOODZ","UP",12],
+  [11,"It′s Me","아일릿(ILLIT)","NONE",11],[12,"꿈꾸던 어른이 되었나요?","머무르","UP",33],[13,"BiiiG","BIGBANG (빅뱅)","DOWN",10],[14,"사랑하게 될 거야","한로로","NONE",14],[15,"Good Goodbye","화사 (HWASA)","DOWN",13],[16,"캐치 캐치","YENA (최예나)","DOWN",15],[17,"노스탈지아","BIG Naughty (서동현)","DOWN",16],[18,"RUDE!","Hearts2Hearts (하츠투하츠)","UP",19],[19,"Popcorn","도경수(D.O.)","UP",21],[20,"생각을 멈추다 보면","최유리","UP",22],
+  [21,"Dear my crazy soulmate","아이유","DOWN",17],[22,"0+0","한로로","DOWN",20],[23,"어떻게 이별까지 사랑하겠어, 널 사랑하는 거지","AKMU (악뮤)","NONE",23],[24,"타임캡슐","다비치","NONE",24],[25,"너의 모든 순간","성시경","UP",28],[26,"기쁨, 슬픔, 아름다운 마음","AKMU (악뮤)","UP",27],[27,"여름아 부탁해","볼빨간사춘기","DOWN",25],[28,"이 별로부터","아이유","DOWN",18],[29,"Skibidi","소녀시대-효리수","DOWN",26],[30,"소문의 낙원","AKMU (악뮤)","DOWN",29],
+  [31,"내게 사랑이 뭐냐고 물어본다면","로이킴","UP",34],[32,"Pop Off Pop Off","KiiiKiii (키키)","DOWN",30],[33,"어제보다 슬픈 오늘","우디 (Woody)","DOWN",32],[34,"Lemon Tang","Hearts2Hearts (하츠투하츠)","DOWN",31],[35,"Blue Valentine","NMIXX","UP",37],[36,"봄 내음보다 너를","김나영","UP",41],[37,"HOME SWEET HOME (feat. 태양, 대성)","G-DRAGON","DOWN",36],[38,"404 (New Era)","KiiiKiii (키키)","DOWN",35],[39,"천상연","이창섭","DOWN",38],[40,"그대만 있다면","너드커넥션 (Nerd Connection)","DOWN",39],
+  [41,"CRASH","ALLDAY PROJECT","UP",84],[42,"BANG BANG","IVE (아이브)","DOWN",40],[43,"toxic till the end","로제 (ROSÉ)","DOWN",42],[44,"멸종위기사랑","이찬혁","DOWN",43],[45,"너에게 닿기를","10CM","DOWN",44],[46,"모르시나요","조째즈","DOWN",45],[47,"주저하는 연인들을 위해","잔나비","UP",48],[48,"모든 날, 모든 순간","폴킴","DOWN",47],[49,"한 페이지가 될 수 있게","DAY6 (데이식스)","DOWN",46],[50,"뛰어(JUMP)","BLACKPINK","DOWN",49],
+  [51,"소나기","이클립스 (ECLIPSE)","DOWN",50],[52,"청춘만화","이무진","NONE",52],[53,"Heavy Serenade","NMIXX","UP",57],[54,"Runaway","RESCENE (리센느)","UP",55],[55,"Whiplash","aespa","DOWN",51],[56,"Golden","HUNTR/X 외","DOWN",54],[57,"HAPPY","DAY6 (데이식스)","DOWN",56],[58,"헤어지자 말해요","박재정","UP",64],[59,"사랑은 늘 도망가","임영웅","DOWN",53],[60,"오늘만 I LOVE YOU","BOYNEXTDOOR","DOWN",58],
+  [61,"그대 작은 나의 세상이 되어","카더가든","DOWN",60],[62,"예뻤어","DAY6 (데이식스)","NONE",62],[63,"입춘","한로로","UP",65],[64,"나는 반딧불","황가람","DOWN",61],[65,"Guitarist","도경수(D.O.)","DOWN",59],[66,"like JENNIE","제니 (JENNIE)","DOWN",63],[67,"APT.","로제 (ROSÉ) & Bruno Mars","DOWN",66],[68,"사랑인가 봐","멜로망스","DOWN",67],[69,"Die With A Smile","Lady Gaga & Bruno Mars","NONE",69],[70,"청혼하지 않을 이유를 못 찾았어","이무진","UP",73],
+  [71,"다정히 내 이름을 부르면","경서예지 & 전건호","DOWN",70],[72,"Welcome to the Show","DAY6 (데이식스)","DOWN",71],[73,"Love wins all","아이유","DOWN",68],[74,"Love Love Love","에픽하이 (EPIK HIGH)","NONE",74],[75,"첫 만남은 계획대로 되지 않아","TWS (투어스)","DOWN",72],[76,"Hype Boy","NewJeans","DOWN",75],[77,"STYLE","Hearts2Hearts (하츠투하츠)","NONE",77],[78,"연애의 조건 (Love Options)","베스티","UP",87],[79,"Magnetic","아일릿(ILLIT)","DOWN",76],[80,"Seven (feat. Latto) - Clean Ver.","정국","DOWN",78],
+  [81,"Vitamin ME","프로미스나인","DOWN",79],[82,"사랑은 봄비처럼...이별은 겨울비처럼...","임현정","DOWN",80],[83,"REBEL HEART","IVE (아이브)","DOWN",82],[84,"Dynamite","방탄소년단","DOWN",83],[85,"봄날","방탄소년단","UP",86],[86,"SWIM","방탄소년단","DOWN",85],[87,"Less than a Lover","제니 (JENNIE)","DOWN",81],[88,"이 밤을 빌려 말해요","PLAVE","UP",89],[89,"우리들의 블루스","임영웅","DOWN",88],[90,"Pinball","RESCENE (리센느)","NEW",0],
+  [91,"FAMOUS","ALLDAY PROJECT","NONE",91],[92,"Flower","오반(OVAN)","NONE",92],[93,"달리 표현할 수 없어요","로이킴","UP",95],[94,"순간을 영원처럼","임영웅","DOWN",90],[95,"시작의 아이","박다혜 & 마크툽","UP",96],[96,"또또","임영웅","DOWN",93],[97,"에피소드","이무진","NONE",97],[98,"ONE MORE TIME","ALLDAY PROJECT","NONE",98],[99,"Surfin' Boy","Red Velvet (레드벨벳)","DOWN",94],[100,"I AM","IVE (아이브)","DOWN",99],
+];
+const HOT_LIKE_SONGS = [
+  [1,"Star Trace","PLAVE","NEW",0],[2,"꾼","PLAVE","NEW",0],[3,"푸른 하늘에 단비","PLAVE","NEW",0],[4,"Rewind","PLAVE","NEW",0],[5,"The Answer Is Yes","PLAVE","NEW",0],[6,"I SPY","NCT WISH","NEW",0],[7,"꿈결 (Like A Dream)","NCT WISH","NEW",0],[8,"We Own This Street","NCT WISH","NEW",0],[9,"Super Major","NCT WISH","NEW",0],[10,"Hubble Time","NCT WISH","NEW",0],[11,"UPGRADE","NCT WISH","NEW",0],[12,"UNDEAD","성한빈","NEW",0],[13,"Killin' Me","성한빈","NEW",0],[14,"Insidious","성한빈","NEW",0],[15,"섬광","성한빈","NEW",0],[16,"Bloody Gravity","성한빈","NEW",0],[17,"Steal the Thunder","성한빈","NEW",0],[18,"3AM","성한빈","NEW",0],[19,"Other Side","성한빈","NEW",0],[20,"미야","장한별","NEW",0],[21,"Obsessed with Youth","Xdinary Heroes","NEW",0],[22,"꿈꾸던 어른이 되었나요?","머무르","NEW",0],[23,"You Right There","Xdinary Heroes","NEW",0],[24,"Give Up The Ghost","Xdinary Heroes","NEW",0],[25,"Heart Stage","캐치! 티니핑 & PLAVE","NEW",0],[26,"u and me in arguments","Xdinary Heroes","NEW",0],[27,"GO HARD","MEOVV (미야오)","NEW",0],[28,"Love in dystopia","Xdinary Heroes","NEW",0],[29,"Slashhh!","Xdinary Heroes","NEW",0],[30,"이 밤을 빌려 말해요","PLAVE","NEW",0],
+];
+const HOT_SEARCH_SONGS = [
+  [1,"어떻게 이별까지 사랑하겠어, 널 사랑하는 거지","AKMU (악뮤)","NEW",0],[2,"LOVE ATTACK","RESCENE (리센느)","NEW",0],[3,"너를 만나","폴킴","NEW",0],[4,"모든 날, 모든 순간","폴킴","NEW",0],[5,"늦은 밤 너의 집 앞 골목길에서","노을","NEW",0],[6,"희재","성시경","NEW",0],[7,"가을 안부","먼데이 키즈","NEW",0],[8,"퇴사할게여 (Narr. 기안84)","소연 (SOYEON)","NEW",0],[9,"가을밤에 든 생각","잔나비","NEW",0],[10,"광화문에서","규현 (KYUHYUN)","NEW",0],[11,"너의 모든 순간","성시경","NEW",0],[12,"LEMONADE","aespa","NEW",0],[13,"바람이 분다","이소라","NEW",0],[14,"갑자기","아이오아이 (I.O.I)","NEW",0],[15,"거리에서","성시경","NEW",0],[16,"It′s Me","아일릿(ILLIT)","NEW",0],[17,"응급실","izi","NEW",0],[18,"캐치 캐치","YENA (최예나)","NEW",0],[19,"그리워하다","비투비","NEW",0],[20,"RUDE!","Hearts2Hearts (하츠투하츠)","NEW",0],[21,"Good Goodbye","화사 (HWASA)","NEW",0],[22,"Deja Vu","RESCENE (리센느)","NEW",0],[23,"가을밤 떠난 너","케이시 (Kassy)","NEW",0],[24,"주저하는 연인들을 위해","잔나비","NEW",0],[25,"좋니","윤종신","NEW",0],[26,"밤편지","아이유","NEW",0],[27,"바람기억","나얼","NEW",0],[28,"Pop Off Pop Off","KiiiKiii (키키)","NEW",0],[29,"헤어지자 말해요","박재정","NEW",0],[30,"소녀","오혁","NEW",0],
+];
+const HOT_DJ_SONGS = [
+  [1,"꿈꾸던 어른이 되었나요?","머무르","NEW",0],[2,"나를 외치다","박예승","NEW",0],[3,"사랑한 만큼","팀","NEW",0],[4,"김성호의 회상","임바다","NEW",0],[5,"퇴사할게여 (Narr. 기안84)","소연 (SOYEON)","NEW",0],[6,"크게 울어라","로이킴","NEW",0],[7,"계절의 끝","박재정","NEW",0],[8,"CRASH","ALLDAY PROJECT","NEW",0],[9,"사랑 그 쓸쓸함에 대하여","김소연","NEW",0],[10,"잔불 (Still)","엔플라잉 (N.Flying)","NEW",0],[11,"Pinball","RESCENE (리센느)","NEW",0],[12,"세상이 그대를 속일지라도","한로이","NEW",0],[13,"Think About' Chu","아소토 유니온","NEW",0],[14,"LOVE ATTACK","RESCENE (리센느)","NEW",0],[15,"미야","장한별","NEW",0],[16,"나를 외치다","마야","NEW",0],[17,"마음의 숲","조선힙합","NEW",0],[18,"내일 할 일","윤종신 & 성시경","NEW",0],[19,"안되나요","허채민","NEW",0],[20,"난치병","이민우","NEW",0],[21,"살다보니","조선힙합_official","NEW",0],[22,"GO HARD","MEOVV (미야오)","NEW",0],[23,"이별여행","민지유","NEW",0],[24,"생각을 멈추다 보면","최유리","NEW",0],[25,"ICONIC HEART (Korean Ver.)","Hearts2Hearts (하츠투하츠)","NEW",0],[26,"Think About' Chu","박대희","NEW",0],[27,"고열","유다빈밴드","NEW",0],[28,"Talk to me","ALPHA DRIVE ONE","NEW",0],[29,"BAD","ATEEZ(에이티즈)","NEW",0],[30,"Blinding Lights","The Weeknd","NEW",0],
+];
+const CHART_MODES = {
+  daily:  {label:'일간', period:'10월 13일', songs:DAILY_SONGS,      topN:10},
+  weekly: {label:'주간', period:'10/7~13',   songs:WEEKLY_SONGS,     topN:10},
+  like:   {label:'좋아요 HOT', period:'오늘', songs:HOT_LIKE_SONGS,  topN:10},
+  search: {label:'검색 HOT',  period:'오늘', songs:HOT_SEARCH_SONGS, topN:10},
+  dj:     {label:'DJ HOT',   period:'오늘', songs:HOT_DJ_SONGS,     topN:10},
+};
+
+// ===== LATEST SONGS DATA (Game2) =====
+const LATEST_DATE = '2026-10-13';
+const LATEST_SONGS = [
+  {name:'미장센', artist:'에픽하이 (EPIK HIGH) & 다비치', album:'미장센'},
+  {name:'SUPERSTAR', artist:'A2O & A2O SOUL', album:'SUPERSTAR'},
+  {name:'STAMINA', artist:'박우진', album:'SOLSTICE'},
+  {name:'그 계절', artist:'이민혁', album:'너에게 다이브 OST Part.3'},
+  {name:'잔상', artist:'홍승민', album:'잔상'},
+  {name:'NEON', artist:'A2O & A2O LITE', album:'NEON'},
+  {name:'From the Source 시초지에서', artist:'So!YoON! (황소윤)', album:'Pilgrims OST'},
+  {name:'글이라는 길', artist:'브로콜리너마저', album:'글이라는 길'},
+  {name:'Feelings', artist:'에일리밴드', album:'Feelings'},
+  {name:'디핵의 노래', artist:'디핵 (D-Hack)', album:'D와 33의 가을'},
+  {name:'고마워, 오늘도 너라서', artist:'임도혁', album:'고마워, 오늘도 너라서'},
+  {name:'나를 외치다', artist:'박예승', album:'우리들의 발라드 2 Story 2'},
+  {name:'그녀는', artist:'그리드웨이', album:'그녀는'},
+  {name:'마음이 외치고 싶어해', artist:'소서단', album:'마음이 외치고 싶어해'},
+  {name:'힘내라 친구야', artist:'버거형', album:'힘내라 친구야'},
+  {name:'아임 파인 땡큐 앤유', artist:'굿굿', album:'아임 파인 땡큐 앤유'},
+  {name:'I SPY', artist:'NCT WISH', album:'I SPY - The 4th Mini Album'},
+  {name:'Star Trace', artist:'PLAVE', album:'HYPERDRIVE'},
+  {name:'UNDEAD', artist:'성한빈', album:'DEAD:ALIVE'},
+  {name:'GO HARD', artist:'MEOVV (미야오)', album:'GO HARD'},
+  {name:'너 없는 하루를 살아', artist:'서희라(에코비)', album:'너 없는 하루를 살아'},
+  {name:'더 박서(The Boxer)', artist:'류지광', album:'더 박서(The Boxer)'},
+  {name:'잔불 (Still)', artist:'엔플라잉 (N.Flying)', album:'Still'},
+  {name:'크게 울어라', artist:'로이킴', album:'크게 울어라'},
+  {name:'계절의 끝', artist:'박재정', album:'기록 (上)'},
+  {name:'99°C', artist:'마션 & 임도혁', album:'99°C'},
+  {name:'Curtain Call', artist:'SEVENHOURS', album:'Curtain Call'},
+  {name:'Narcy Girl', artist:'Cmnd', album:'Narcy Girl'},
+  {name:'Chardonnay', artist:'그네 & 리 윤', album:'Chardonnay'},
+  {name:'아임 파인 땡큐 앤유', artist:'굿굿', album:'아임 파인 땡큐 앤유'},
+];
+// Build TOP100 map for settlement
+const DAILY_TOP100_MAP = {};
+DAILY_SONGS.forEach(s=>{DAILY_TOP100_MAP[s[1]]=s[0];});
+</script>
+
+<!-- HOME SCREEN -->
+<div id="screen-home" class="screen active">
+  <div class="home-wrap">
+    <div class="home-header">
+      <div class="home-logo">MELON <em>GAME</em> HUB</div>
+      <div class="home-sub">멜론 차트 예측 게임 모음</div>
+      <div class="home-wallet" id="home-wallet-display">10,000pt 보유</div>
+    </div>
+    <div class="home-cards">
+      <div class="game-card" onclick="enterGame(1)">
+        <div class="game-card-icon">🏆</div>
+        <div class="game-card-title">차트 <em>TOP10</em> 예측</div>
+        <div class="game-card-desc">실시간·일간·주간·HOT TRACK 차트에서<br>TOP10 진입곡을 예측하고 포인트를 얻으세요.<br>제출 즉시 결과 확인!</div>
+        <div>
+          <span class="game-card-tag tag-instant">즉시 결과</span>
+          <span class="game-card-tag tag-instant">배율 ×1.1~×3</span>
+        </div>
+        <button class="game-card-btn">시작하기 →</button>
+      </div>
+      <div class="game-card" onclick="enterGame(2)">
+        <div class="game-card-icon">🔥</div>
+        <div class="game-card-title">신곡 <em>TOP100</em> 도전</div>
+        <div class="game-card-desc">오늘 출시된 신곡 중 3곡을 선택해<br>7일 후 TOP100 진입 여부와 순위를 예측!<br>정확할수록 최대 4배 보상.</div>
+        <div>
+          <span class="game-card-tag tag-7day">7일 후 정산</span>
+          <span class="game-card-tag tag-7day">배율 ×1.5~×4</span>
+        </div>
+        <button class="game-card-btn" style="background:#1060C0">시작하기 →</button>
+      </div>
+    </div>
+    <div class="home-footer">포인트는 두 게임 공유 · 기본 지급 10,000pt</div>
+  </div>
 </div>
 
-<div id="app" style="display:none">
+<!-- GAME1: CHART TOP10 PICK -->
+<div id="screen-game1" class="screen">
   <header class="app-header">
     <div class="header-row">
+      <button class="back-btn" onclick="goHome()">←</button>
       <div class="brand">
-        <div class="game-name">MELON <em>TOP10</em> PICK</div>
-        <div class="game-sub" id="game-sub">멜론 차트 예측 게임</div>
+        <div class="game-name">TOP<em>10</em> PICK</div>
+        <div class="game-sub">차트 TOP10 진입 예측 · 2026.10.13</div>
       </div>
       <div class="wallet-box">
-        <div class="wallet-num" id="wallet-display">10,000</div>
+        <div class="wallet-num" id="g1-wallet">10,000</div>
         <div class="wallet-lbl">보유 포인트</div>
       </div>
     </div>
     <nav class="tab-strip">
-      <button class="tab-btn active" onclick="switchTab('pick')">예측하기</button>
-      <button class="tab-btn" onclick="switchTab('history')">내 기록</button>
+      <button class="tab-btn active" id="g1-tab-pick" onclick="g1SwitchTab('pick')">예측하기</button>
+      <button class="tab-btn" id="g1-tab-history" onclick="g1SwitchTab('history')">내 기록</button>
     </nav>
   </header>
-
-  <div class="error-banner" id="error-banner">차트 데이터를 불러오지 못했습니다. 이전 데이터로 표시됩니다.</div>
-
   <main>
-    <div id="pane-pick" class="tab-pane active">
-      <div class="chart-type-bar" id="chart-type-bar"></div>
-      <div class="answer-bar">
-        <span class="answer-icon">⚡</span>
-        <span>기준: <strong>실시간 TOP10</strong> — 내일 오전 자동 정산</span>
-        <span class="answer-date" id="answer-date"></span>
+    <div id="g1-pane-pick" class="tab-pane active">
+      <div class="chart-type-bar">
+        <button class="ct-btn active" data-mode="daily" onclick="g1SetMode('daily')">일간<span class="ct-period">10월 13일</span></button>
+        <button class="ct-btn" data-mode="weekly" onclick="g1SetMode('weekly')">주간<span class="ct-period">10/7~13</span></button>
+        <button class="ct-btn" data-mode="like" onclick="g1SetMode('like')">좋아요 HOT<span class="ct-period">오늘</span></button>
+        <button class="ct-btn" data-mode="search" onclick="g1SetMode('search')">검색 HOT<span class="ct-period">오늘</span></button>
+        <button class="ct-btn" data-mode="dj" onclick="g1SetMode('dj')">DJ HOT<span class="ct-period">오늘</span></button>
       </div>
+      <div class="answer-bar"><span>⚡</span><span>제출 즉시 판정 — 기준: <strong>실시간 TOP 10</strong> (2026.10.13 현재)</span></div>
       <div class="slip-panel">
-        <div class="slip-empty" id="slip-empty">예측 대상 곡을 선택하세요 (최대 3개)</div>
-        <div class="slip-picks" id="slip-picks" style="display:none"></div>
-        <div id="slip-bet-area" style="display:none">
+        <div class="slip-empty" id="g1-slip-empty">11위 이하 곡을 최대 3개 선택하세요 👇</div>
+        <div class="slip-picks" id="g1-slip-picks" style="display:none"></div>
+        <div id="g1-slip-bet-area" style="display:none">
           <div class="slip-bet-row">
             <span class="bet-label">곡당 베팅</span>
-            <input class="bet-input" id="bet-input" type="number" value="500" min="100" step="100" oninput="updateSlip()">
-            <span class="bet-info" id="bet-info"></span>
+            <input class="bet-input" type="number" id="g1-bet-input" value="500" min="100" step="100" oninput="g1UpdateSlip()">
+            <span class="bet-info" id="g1-bet-info"></span>
           </div>
-          <button class="submit-btn" id="submit-btn" onclick="submitBet()" disabled>예측 제출하기</button>
+          <button class="submit-btn" id="g1-submit-btn" onclick="g1SubmitBet()">예측 제출하기</button>
         </div>
       </div>
-      <div id="chart-container"></div>
+      <div id="g1-chart-container"></div>
     </div>
-
-    <div id="pane-history" class="tab-pane">
-      <div id="history-container"></div>
+    <div id="g1-pane-history" class="tab-pane">
+      <div id="g1-history-container"></div>
     </div>
   </main>
 </div>
 
+<!-- GAME2: NEW TRACK TOP100 CHALLENGE -->
+<div id="screen-game2" class="screen">
+  <header class="app-header">
+    <div class="header-row">
+      <button class="back-btn" onclick="goHome()">←</button>
+      <div class="brand">
+        <div class="game-name">신곡 <em>TOP100</em> 도전</div>
+        <div class="game-sub">7일 후 TOP100 진입 예측 · 출시일 2026.10.13</div>
+      </div>
+      <div class="wallet-box">
+        <div class="wallet-num" id="g2-wallet">10,000</div>
+        <div class="wallet-lbl">보유 포인트</div>
+      </div>
+    </div>
+    <nav class="tab-strip">
+      <button class="tab-btn active" id="g2-tab-pick" onclick="g2SwitchTab('pick')">예측하기</button>
+      <button class="tab-btn" id="g2-tab-history" onclick="g2SwitchTab('history')">내 기록</button>
+    </nav>
+  </header>
+  <main>
+    <div id="g2-pane-pick" class="tab-pane active">
+      <div class="g2-info-bar">오늘 출시된 신곡 중 <strong>3곡</strong>을 선택해 <strong>7일 후 TOP100 진입</strong> 여부와 예상 순위를 예측하세요.<br>순위가 정확할수록 최대 <strong>×4</strong> 보상!</div>
+      <div class="g2-slip" id="g2-slip-panel">
+        <div class="g2-slip-empty" id="g2-slip-empty">아래 목록에서 신곡을 선택하세요 👇</div>
+        <div id="g2-picks-list" style="display:none"></div>
+        <div id="g2-slip-bet-area" style="display:none">
+          <div class="slip-bet-row">
+            <span class="bet-label">곡당 베팅</span>
+            <input class="bet-input" type="number" id="g2-bet-input" value="500" min="100" step="100" oninput="g2UpdateSlip()">
+            <span class="bet-info" id="g2-bet-info"></span>
+          </div>
+          <button class="submit-btn" id="g2-submit-btn" style="background:#1060C0" onclick="g2SubmitBet()">예측 제출하기</button>
+        </div>
+      </div>
+      <div class="g2-songs-section">🎵 최신 출시 신곡 (2026.10.13) — 최대 3곡 선택</div>
+      <div id="g2-songs-container"></div>
+    </div>
+    <div id="g2-pane-history" class="tab-pane">
+      <div id="g2-history-container"></div>
+    </div>
+  </main>
+</div>
+
+<!-- SHARED RESULT OVERLAY -->
 <div class="result-overlay hidden" id="result-overlay">
   <div class="result-card">
     <div class="result-title" id="result-title">결과 확인</div>
@@ -204,292 +395,358 @@ body{min-height:100vh;max-width:600px;margin:0 auto;background:var(--bg)}
 </div>
 
 <script>
-const WALLET_KEY = 'mel-v2-wallet';
-const HISTORY_KEY = 'mel-v2-history';
-const PENDING_KEY = 'mel-v3-pending';
+// ===== SHARED =====
+const WALLET_KEY='mel-v2-wallet';
+const G1_HISTORY_KEY='mel-v2-history';
+const G1_PENDING_KEY='mel-v3-pending';
+const G2_HISTORY_KEY='mel-g2-history';
+const G2_PENDING_KEY='mel-g2-pending';
 
-let CHART_DATE = '';
-let SONGS = [];
-let TOP10_SET = new Set();
-let CHART_MODES = {};
-let currentMode = 'daily';
-let picks = [];
-
-// ── Storage ───────────────────────────────────────────────
 function getWallet(){const v=parseInt(localStorage.getItem(WALLET_KEY));return isNaN(v)?10000:v}
 function setWallet(v){localStorage.setItem(WALLET_KEY,String(Math.max(0,v)))}
-function loadHistory(){try{return JSON.parse(localStorage.getItem(HISTORY_KEY))||[]}catch{return[]}}
-function saveHistory(h){try{localStorage.setItem(HISTORY_KEY,JSON.stringify(h))}catch{}}
-function loadPending(){try{return JSON.parse(localStorage.getItem(PENDING_KEY))||[]}catch{return[]}}
-function savePending(p){try{localStorage.setItem(PENDING_KEY,JSON.stringify(p))}catch{}}
+function fmt(n){return n.toLocaleString('ko-KR')}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+function addDays(dateStr,days){const p=dateStr.split('-').map(Number);const d=new Date(p[0],p[1]-1,p[2]+days);return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`}
+function loadJson(key){try{return JSON.parse(localStorage.getItem(key))||[]}catch{return[]}}
+function saveJson(key,v){try{localStorage.setItem(key,JSON.stringify(v))}catch{}}
 
-// ── Multiplier ────────────────────────────────────────────
-function getMultiplier(rank){
+function updateAllWallets(){
+  const w=fmt(getWallet());
+  const el1=document.getElementById('g1-wallet');if(el1)el1.textContent=w;
+  const el2=document.getElementById('g2-wallet');if(el2)el2.textContent=w;
+  const elH=document.getElementById('home-wallet-display');if(elH)elH.textContent=w+'pt 보유';
+}
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+function enterGame(n){
+  showScreen('screen-game'+n);
+  if(n===1){g1RenderChart();g1UpdateSlip();}
+  if(n===2){g2RenderSongs();g2UpdateSlip();}
+}
+function goHome(){showScreen('screen-home');updateAllWallets();}
+
+function dismissResult(){document.getElementById('result-overlay').classList.add('hidden');}
+function showResult(title,subtitle,picksHtml,netHtml,walletHtml){
+  document.getElementById('result-title').textContent=title;
+  document.getElementById('result-mode-label').textContent=subtitle;
+  document.getElementById('result-picks').innerHTML=picksHtml;
+  const netEl=document.getElementById('result-net');
+  netEl.innerHTML=netHtml.text;
+  netEl.className='result-net '+netHtml.cls;
+  document.getElementById('result-wallet-info').innerHTML=walletHtml;
+  document.getElementById('result-overlay').classList.remove('hidden');
+}
+
+// ===== GAME 1 =====
+let g1Mode='daily';
+let g1Picks=[];
+
+function g1SwitchTab(tab){
+  document.getElementById('g1-tab-pick').classList.toggle('active',tab==='pick');
+  document.getElementById('g1-tab-history').classList.toggle('active',tab==='history');
+  document.getElementById('g1-pane-pick').classList.toggle('active',tab==='pick');
+  document.getElementById('g1-pane-history').classList.toggle('active',tab==='history');
+  if(tab==='history')g1RenderHistory();
+}
+function g1SetMode(mode){
+  g1Mode=mode;g1Picks=[];
+  document.querySelectorAll('.ct-btn').forEach(b=>b.classList.toggle('active',b.dataset.mode===mode));
+  g1RenderChart();g1UpdateSlip();
+}
+function g1GetMultiplier(rank){
   if(rank<=20)return 1.1;if(rank<=30)return 1.2;if(rank<=40)return 1.3;
   if(rank<=50)return 1.4;if(rank<=70)return 1.5;if(rank<=90)return 2;return 3;
 }
-
-// ── Wallet display ────────────────────────────────────────
-function updateWalletDisplay(){
-  document.getElementById('wallet-display').textContent=fmt(getWallet());
-}
-
-// ── Tabs ──────────────────────────────────────────────────
-function switchTab(tab){
-  document.querySelectorAll('.tab-btn').forEach((b,i)=>{
-    b.classList.toggle('active',(i===0&&tab==='pick')||(i===1&&tab==='history'));
-  });
-  document.getElementById('pane-pick').classList.toggle('active',tab==='pick');
-  document.getElementById('pane-history').classList.toggle('active',tab==='history');
-  if(tab==='history')renderHistory();
-}
-
-// ── Mode ──────────────────────────────────────────────────
-function setMode(mode){
-  currentMode=mode;picks=[];
-  document.querySelectorAll('.ct-btn').forEach(b=>b.classList.toggle('active',b.dataset.mode===mode));
-  renderChart();updateSlip();
-}
-
-// ── Helpers ───────────────────────────────────────────────
-function fmt(n){return Math.round(n).toLocaleString('ko-KR')}
-function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
-function mvDelta(s){
-  const mv=s[3],prev=s[4];
+function g1MvDelta(s){
+  const mv=s[3],cur=s[0],prev=s[4];
   if(mv==='NEW')return '<span class="mv-new">NEW</span>';
-  if(mv==='UP'&&prev>0)return `<span class="mv-up">▲${prev-s[0]>0?prev-s[0]:''}</span>`;
-  if(mv==='DOWN'&&prev>0)return `<span class="mv-dn">▼${s[0]-prev>0?s[0]-prev:''}</span>`;
+  if(mv==='UP'&&prev>0)return `<span class="mv-up">▲${prev-cur>0?prev-cur:''}</span>`;
+  if(mv==='DOWN'&&prev>0)return `<span class="mv-dn">▼${cur-prev>0?cur-prev:''}</span>`;
   if(mv==='UP')return '<span class="mv-up">▲</span>';
   if(mv==='DOWN')return '<span class="mv-dn">▼</span>';
   return '<span class="mv-none">–</span>';
 }
-
-// ── Render chart ──────────────────────────────────────────
-function renderChart(){
-  const mode=CHART_MODES[currentMode];
-  if(!mode){document.getElementById('chart-container').innerHTML='';return}
-  const songs=mode.songs,topN=mode.topN;
+function g1RenderChart(){
+  const mode=CHART_MODES[g1Mode],songs=mode.songs,topN=mode.topN;
   let html=`<div class="chart-section-title">🏆 ${esc(mode.label)} TOP ${topN} — ${esc(mode.period)}</div>`;
   for(let i=0;i<Math.min(topN,songs.length);i++){
     const s=songs[i];
-    html+=`<div class="song-row top10"><span class="s-rank">${s[0]}</span><span class="s-mv">${mvDelta(s)}</span><div class="s-info"><div class="s-name">${esc(s[1])}</div><div class="s-artist">${esc(s[2])}</div></div><span class="s-check">👑</span></div>`;
+    html+=`<div class="song-row top10"><span class="s-rank">${s[0]}</span><span class="s-mv">${g1MvDelta(s)}</span><div class="s-info"><div class="s-name">${esc(s[1])}</div><div class="s-artist">${esc(s[2])}</div></div><span class="s-check">👑</span></div>`;
   }
   const bettable=songs.slice(topN);
   if(bettable.length>0){
-    html+=`<div class="chart-section-title">🎯 예측 대상 — ${esc(mode.label)} ${topN+1}위 이하</div>`;
-    html+=`<div class="chart-hint">이 중에서 현재 실시간 TOP10에 있는 곡을 맞히세요 (최대 3개) · 내일 정산</div>`;
+    html+=`<div class="chart-section-title">🎯 예측 대상 — ${esc(mode.label)} ${topN+1}위 이하</div><div class="chart-hint">이 중 실시간 TOP10에 있는 곡을 맞히세요 (최대 3개)</div>`;
     for(let i=0;i<bettable.length;i++){
-      const s=bettable[i];const idx=topN+i;const sel=picks.includes(idx);
-      const mult=getMultiplier(s[0]);
-      html+=`<div class="song-row bettable${sel?' selected':''}" id="row-${idx}" onclick="togglePick(${idx})"><span class="s-rank">${s[0]}</span><span class="s-mv">${mvDelta(s)}</span><div class="s-info"><div class="s-name">${esc(s[1])}</div><div class="s-artist">${esc(s[2])}</div></div><span class="mult-badge">×${mult}</span><span class="s-check">${sel?'✓':''}</span></div>`;
+      const s=bettable[i],idx=topN+i,sel=g1Picks.includes(idx),mult=g1GetMultiplier(s[0]);
+      html+=`<div class="song-row bettable${sel?' selected':''}" id="g1-row-${idx}" onclick="g1TogglePick(${idx})"><span class="s-rank">${s[0]}</span><span class="s-mv">${g1MvDelta(s)}</span><div class="s-info"><div class="s-name">${esc(s[1])}</div><div class="s-artist">${esc(s[2])}</div></div><span class="mult-badge">×${mult}</span><span class="s-check">${sel?'✓':''}</span></div>`;
     }
   }
-  document.getElementById('chart-container').innerHTML=html;
+  document.getElementById('g1-chart-container').innerHTML=html;
 }
-
-// ── Pick toggle ───────────────────────────────────────────
-function togglePick(idx){
-  if(picks.includes(idx)){picks=picks.filter(p=>p!==idx)}
-  else{if(picks.length>=3){alert('최대 3곡까지 선택할 수 있습니다.');return}picks.push(idx)}
+function g1TogglePick(idx){
+  if(g1Picks.includes(idx)){g1Picks=g1Picks.filter(p=>p!==idx)}
+  else{if(g1Picks.length>=3){alert('최대 3곡까지 선택할 수 있습니다.');return}g1Picks.push(idx)}
   document.querySelectorAll('.song-row.bettable').forEach(row=>{
-    const ri=parseInt(row.id.replace('row-',''));
-    const sel=picks.includes(ri);
+    const ri=parseInt(row.id.replace('g1-row-',''));
+    const sel=g1Picks.includes(ri);
     row.classList.toggle('selected',sel);
     row.querySelector('.s-check').textContent=sel?'✓':'';
   });
-  updateSlip();
+  g1UpdateSlip();
 }
-
-// ── Slip ──────────────────────────────────────────────────
-function getBetValue(){const v=parseInt(document.getElementById('bet-input').value);return isNaN(v)||v<100?100:v}
-function updateSlip(){
-  const mode=CHART_MODES[currentMode];if(!mode)return;
-  const songs=mode.songs;
-  const empty=document.getElementById('slip-empty');
-  const picksEl=document.getElementById('slip-picks');
-  const betArea=document.getElementById('slip-bet-area');
-  if(picks.length===0){empty.style.display='';picksEl.style.display='none';betArea.style.display='none';return}
+function g1GetBet(){const v=parseInt(document.getElementById('g1-bet-input').value);return isNaN(v)||v<100?100:v}
+function g1UpdateSlip(){
+  const mode=CHART_MODES[g1Mode],songs=mode.songs;
+  const empty=document.getElementById('g1-slip-empty');
+  const picksEl=document.getElementById('g1-slip-picks');
+  const betArea=document.getElementById('g1-slip-bet-area');
+  if(g1Picks.length===0){empty.style.display='';picksEl.style.display='none';betArea.style.display='none';return}
   empty.style.display='none';picksEl.style.display='';betArea.style.display='';
-  const bet=getBetValue(),wallet=getWallet();
+  const bet=g1GetBet(),wallet=getWallet();
   let html='',maxPayout=0;
-  for(const idx of picks){
-    const s=songs[idx];const mult=getMultiplier(s[0]);
+  for(const idx of g1Picks){
+    const s=songs[idx],mult=g1GetMultiplier(s[0]);
     maxPayout+=Math.floor(bet*mult);
-    html+=`<div class="slip-row"><span class="slip-badge">${s[0]}위</span><span class="slip-mult">×${mult}</span><span class="slip-song">${esc(s[1])}</span><button class="slip-remove" onclick="togglePick(${idx})">×</button></div>`;
+    html+=`<div class="slip-row"><span class="slip-badge">${s[0]}위</span><span class="slip-mult">×${mult}</span><span class="slip-song">${esc(s[1])}</span><button class="slip-remove" onclick="g1TogglePick(${idx})">×</button></div>`;
   }
   picksEl.innerHTML=html;
-  const total=bet*picks.length,maxNet=maxPayout-total;
-  document.getElementById('bet-info').textContent=`베팅 ${fmt(total)}pt → 전부 적중시 +${fmt(maxNet)}pt · 보유 ${fmt(wallet)}pt`;
-  const ok=picks.length>0&&bet>0&&total<=wallet;
-  const btn=document.getElementById('submit-btn');
+  const total=bet*g1Picks.length,maxNet=maxPayout-total;
+  document.getElementById('g1-bet-info').textContent=`베팅 ${fmt(total)}pt → 전부 적중시 +${fmt(maxNet)}pt`;
+  const ok=g1Picks.length>0&&bet>0&&total<=wallet;
+  const btn=document.getElementById('g1-submit-btn');
   btn.disabled=!ok;
   btn.textContent=ok?`예측 제출 (${fmt(total)}pt 베팅)`:total>wallet?'포인트 부족':'예측 제출하기';
 }
-
-// ── Submit ────────────────────────────────────────────────
-function submitBet(){
-  const mode=CHART_MODES[currentMode],songs=mode.songs;
-  const bet=getBetValue(),wallet=getWallet(),total=bet*picks.length;
+function g1SubmitBet(){
+  const mode=CHART_MODES[g1Mode],songs=mode.songs;
+  const bet=g1GetBet(),wallet=getWallet(),total=bet*g1Picks.length;
   if(total>wallet){alert('포인트가 부족합니다.');return}
-  if(picks.length===0){alert('곡을 선택하세요.');return}
+  if(g1Picks.length===0){alert('곡을 선택하세요.');return}
   setWallet(wallet-total);
-  const pickData=picks.map(idx=>{
-    const s=songs[idx];return{rank:s[0],name:s[1],artist:s[2],bet,mult:getMultiplier(s[0])};
-  });
-  const pending=loadPending();
+  const pickData=g1Picks.map(idx=>{const s=songs[idx];return{rank:s[0],name:s[1],artist:s[2],bet,mult:g1GetMultiplier(s[0])};});
+  const pending=loadJson(G1_PENDING_KEY);
   pending.push({id:Date.now().toString(),chartDate:CHART_DATE,modeLabel:mode.label,period:mode.period,picks:pickData,totalBet:total,ts:new Date().toLocaleString('ko-KR')});
-  savePending(pending);
-  picks=[];renderChart();updateSlip();
-  showPendingConfirm(mode,pickData,total);
-  updateWalletDisplay();
-}
-
-// ── Pending confirm overlay ───────────────────────────────
-function showPendingConfirm(mode,pickData,total){
-  document.getElementById('result-title').textContent='예측 완료';
-  document.getElementById('result-mode-label').textContent=`${mode.label} (${mode.period}) — 결과 대기 중`;
+  saveJson(G1_PENDING_KEY,pending);
+  g1Picks=[];g1RenderChart();g1UpdateSlip();
+  updateAllWallets();
   let html='',maxNet=0;
-  for(const p of pickData){
-    const payout=Math.floor(p.bet*p.mult);maxNet+=payout-p.bet;
-    html+=`<div class="result-pick-row"><span class="result-pick-indicator">🕐</span><div class="result-pick-info"><div class="result-pick-name">${esc(p.name)}</div><div class="result-pick-artist">${p.rank}위 · 적중시 +${fmt(payout-p.bet)}pt (×${p.mult})</div></div><span class="result-pick-pts" style="color:#5A5585">-${fmt(p.bet)}pt</span></div>`;
-  }
-  document.getElementById('result-picks').innerHTML=html;
-  const netEl=document.getElementById('result-net');
-  netEl.textContent='내일 오전 차트 업데이트 시 자동으로 정산됩니다';
-  netEl.className='result-net pending';
-  document.getElementById('result-wallet-info').innerHTML=`베팅 ${fmt(total)}pt 차감 · 최대 +${fmt(maxNet)}pt 가능`;
-  document.getElementById('result-overlay').classList.remove('hidden');
+  for(const p of pickData){const payout=Math.floor(p.bet*p.mult);maxNet+=payout-p.bet;html+=`<div class="result-pick-row"><span class="result-pick-indicator">🕐</span><div class="result-pick-info"><div class="result-pick-name">${esc(p.name)}</div><div class="result-pick-artist">${p.rank}위 · 적중시 +${fmt(payout-p.bet)}pt (×${p.mult})</div></div><span class="result-pick-pts" style="color:#5A5585">-${fmt(p.bet)}pt</span></div>`;}
+  showResult('예측 완료',`${mode.label} (${mode.period}) — 결과 대기 중`,html,{text:'내일 차트 업데이트 시 자동으로 정산됩니다',cls:'pending'},`베팅 ${fmt(total)}pt 차감 · 최대 +${fmt(maxNet)}pt 가능`);
 }
-
-// ── Auto-settle pending bets ──────────────────────────────
-function settlePendingBets(){
-  const pending=loadPending();
+function g1SettlePendingBets(){
+  const pending=loadJson(G1_PENDING_KEY);
   const toSettle=pending.filter(b=>b.chartDate<CHART_DATE);
   const remaining=pending.filter(b=>b.chartDate>=CHART_DATE);
   if(toSettle.length===0)return;
-  const settledRounds=[];
+  const settled=[];
+  for(const bet of toSettle){
+    const results=bet.picks.map(p=>{const correct=TOP10_SET.has(p.name);const payout=Math.floor(p.bet*p.mult);if(correct)setWallet(getWallet()+payout);return{...p,correct,payout};});
+    const net=results.reduce((a,r)=>a+(r.correct?r.payout-r.bet:-r.bet),0);
+    settled.push({mode:bet.modeLabel,period:bet.period,results,net,walletAfter:getWallet(),ts:new Date().toLocaleString('ko-KR')});
+  }
+  const h=loadJson(G1_HISTORY_KEY);h.unshift(...settled);saveJson(G1_HISTORY_KEY,h);saveJson(G1_PENDING_KEY,remaining);
+  updateAllWallets();
+  let html='',totalNet=0;
+  for(const r of settled){
+    html+=`<div class="result-round-label">${esc(r.mode)} (${esc(r.period)})</div>`;
+    for(const p of r.results){html+=`<div class="result-pick-row"><span class="result-pick-indicator">${p.correct?'✅':'❌'}</span><div class="result-pick-info"><div class="result-pick-name">${esc(p.name)}</div><div class="result-pick-artist">${p.correct?'진입!':'미진입'}</div></div><span class="result-pick-pts ${p.correct?'gain':'loss'}">${p.correct?'+'+fmt(p.payout-p.bet):'-'+fmt(p.bet)}pt${p.correct?' (×'+p.mult+')':''}</span></div>`;}
+    totalNet+=r.net;
+  }
+  const n=totalNet;
+  showResult('베팅 결과 정산',`${CHART_DATE} 차트 기준 자동 정산`,html,{text:n>0?`전체 수익 +${fmt(n)}pt`:n<0?`전체 손실 ${fmt(Math.abs(n))}pt`:'본전',cls:n>0?'positive':n<0?'negative':'zero'},`잔여 포인트: <strong>${fmt(getWallet())}pt</strong>`);
+}
+function g1RenderHistory(){
+  const h=loadJson(G1_HISTORY_KEY),pending=loadJson(G1_PENDING_KEY),wallet=getWallet();
+  const all=h.length+pending.length;
+  let html=`<div class="history-wallet-banner"><div><div class="hwb-label">현재 보유 포인트</div><div class="hwb-amount">${fmt(wallet)}pt</div></div><div style="text-align:right"><div class="hwb-label">총 라운드</div><div class="hwb-amount" style="font-size:18px">${all}회</div></div></div>`;
+  if(all===0){html+=`<div class="history-empty">아직 기록이 없습니다.</div>`;document.getElementById('g1-history-container').innerHTML=html;return;}
+  for(const r of pending){
+    let ph='',maxNet=0;
+    for(const p of r.picks){const payout=Math.floor(p.bet*p.mult);maxNet+=payout-p.bet;ph+=`<div class="hc-pick-row"><span class="hc-indicator">🕐</span><span class="hc-name">${esc(p.name)}</span><span class="hc-pts" style="color:#5A5585">-${fmt(p.bet)}pt</span></div>`;}
+    html+=`<div class="history-card" style="border-left:3px solid #C46A00"><div class="hc-header"><span class="hc-mode" style="background:#FFF0DC;color:#8B5010">${esc(r.modeLabel)}</span><span class="hc-period">${esc(r.period)}</span><span style="font-size:10px;background:#FFF0DC;color:#C46A00;padding:2px 6px;border-radius:8px;font-weight:700">결과 대기중</span><span class="hc-time">${esc(r.ts)}</span></div>${ph}<div class="hc-total" style="color:#C46A00">최대 +${fmt(maxNet)}pt 가능</div></div>`;
+  }
+  for(const r of h){
+    let ph='';
+    for(const p of r.results){const cls=p.correct?'gain':'loss';ph+=`<div class="hc-pick-row"><span class="hc-indicator">${p.correct?'✅':'❌'}</span><span class="hc-name">${esc(p.name)}</span><span class="hc-pts ${cls}">${p.correct?'+'+fmt(p.payout-p.bet):'-'+fmt(p.bet)}pt${p.correct?' ×'+p.mult:''}</span></div>`;}
+    const nc=r.net>0?'positive':r.net<0?'negative':'';
+    html+=`<div class="history-card"><div class="hc-header"><span class="hc-mode">${esc(r.mode)}</span><span class="hc-period">${esc(r.period)}</span><span class="hc-time">${esc(r.ts)}</span></div>${ph}<div class="hc-total ${nc}">${r.net>0?'+'+fmt(r.net):fmt(r.net)}pt</div></div>`;
+  }
+  document.getElementById('g1-history-container').innerHTML=html;
+}
+
+// ===== GAME 2 =====
+let g2Picks=[];   // indices into LATEST_SONGS
+let g2Entry={};   // idx -> true(진입) / false(미진입) / undefined(미선택)
+let g2Rank={};    // idx -> number or null
+
+function g2SwitchTab(tab){
+  document.getElementById('g2-tab-pick').classList.toggle('active',tab==='pick');
+  document.getElementById('g2-tab-history').classList.toggle('active',tab==='history');
+  document.getElementById('g2-pane-pick').classList.toggle('active',tab==='pick');
+  document.getElementById('g2-pane-history').classList.toggle('active',tab==='history');
+  if(tab==='history')g2RenderHistory();
+}
+function g2TogglePick(idx){
+  if(g2Picks.includes(idx)){
+    g2Picks=g2Picks.filter(p=>p!==idx);
+    delete g2Entry[idx];delete g2Rank[idx];
+  } else {
+    if(g2Picks.length>=3){alert('최대 3곡까지 선택할 수 있습니다.');return}
+    g2Picks.push(idx);
+    g2Entry[idx]=true; // default: 진입 예측
+    g2Rank[idx]=50;    // default rank
+  }
+  g2RenderSongs();g2UpdateSlip();
+}
+function g2SetEntry(idx,val){
+  g2Entry[idx]=val;
+  if(!val)g2Rank[idx]=null;
+  else if(!g2Rank[idx])g2Rank[idx]=50;
+  g2UpdateSlip();
+}
+function g2SetRank(idx,val){
+  const n=parseInt(val);
+  g2Rank[idx]=(isNaN(n)||n<1||n>100)?null:n;
+}
+function g2GetMultiplier(predictEntry,predictRank,actualRank){
+  const inTop=(actualRank!=null&&actualRank!==undefined);
+  if(!predictEntry){return inTop?null:1.5;}
+  if(!inTop)return null;
+  if(predictRank==null)return 1.5;
+  const diff=Math.abs(actualRank-predictRank);
+  if(diff<=5)return 4;if(diff<=10)return 3;if(diff<=20)return 2;return 1.5;
+}
+function g2RenderSongs(){
+  let html='';
+  for(let i=0;i<LATEST_SONGS.length;i++){
+    const s=LATEST_SONGS[i],sel=g2Picks.includes(i);
+    html+=`<div class="g2-song-row${sel?' g2-selected':''}" id="g2-row-${i}" onclick="g2TogglePick(${i})">
+      <div class="g2-sr-num">${sel?`<span class="g2-sr-check">✓</span>`:'<span style="color:#CCC7E0;font-size:12px">○</span>'}</div>
+      <div class="g2-sr-info"><div class="g2-sr-name">${esc(s.name)}</div><div class="g2-sr-sub">${esc(s.artist)} · ${esc(s.album)}</div></div>
+      <span class="g2-sr-new">신곡</span>
+    </div>`;
+  }
+  document.getElementById('g2-songs-container').innerHTML=html;
+}
+function g2UpdateSlip(){
+  const empty=document.getElementById('g2-slip-empty');
+  const listEl=document.getElementById('g2-picks-list');
+  const betArea=document.getElementById('g2-slip-bet-area');
+  if(g2Picks.length===0){empty.style.display='';listEl.style.display='none';betArea.style.display='none';return;}
+  empty.style.display='none';listEl.style.display='';betArea.style.display='';
+  const bet=g2GetBet(),wallet=getWallet();
+  let html='';
+  for(let i=0;i<g2Picks.length;i++){
+    const idx=g2Picks[i],s=LATEST_SONGS[idx],entry=g2Entry[idx],rank=g2Rank[idx];
+    const maxMult=entry?4:1.5;
+    const validEntry=(entry===true||entry===false);
+    const rankOk=(entry===false||(entry===true&&rank!=null&&rank>=1&&rank<=100));
+    html+=`<div class="g2-pick-card">
+      <div class="g2-pick-top">
+        <span class="g2-pick-num">${i+1}</span>
+        <div style="flex:1;min-width:0"><div class="g2-pick-name">${esc(s.name)}</div><div class="g2-pick-artist">${esc(s.artist)}</div></div>
+        <button class="g2-pick-remove" onclick="g2TogglePick(${idx})">×</button>
+      </div>
+      <div class="g2-pred-row">
+        <div class="g2-toggle-group">
+          <button class="g2-toggle${entry===true?' active-yes':''}" onclick="g2SetEntry(${idx},true);g2UpdateSlip()">진입</button>
+          <button class="g2-toggle${entry===false?' active-no':''}" onclick="g2SetEntry(${idx},false);g2UpdateSlip()">미진입</button>
+        </div>
+        ${entry===true?`<div class="g2-rank-wrap"><input class="g2-rank-input" type="number" min="1" max="100" value="${rank||50}" placeholder="순위" oninput="g2SetRank(${idx},this.value);g2UpdateSlip()"><span class="g2-rank-lbl">위 예상</span></div>`:''}
+        <span class="g2-payout-lbl">${validEntry?`최대 ×${entry?4:1.5}`:''}</span>
+      </div>
+    </div>`;
+  }
+  listEl.innerHTML=html;
+  const total=bet*g2Picks.length;
+  document.getElementById('g2-bet-info').textContent=`베팅 ${fmt(total)}pt · 7일 후 정산`;
+  const allValid=g2Picks.every(idx=>{const e=g2Entry[idx];if(e===undefined)return false;if(e===true&&(g2Rank[idx]==null||g2Rank[idx]<1))return false;return true;});
+  const ok=g2Picks.length>0&&bet>0&&total<=wallet&&allValid;
+  const btn=document.getElementById('g2-submit-btn');
+  btn.disabled=!ok;
+  btn.textContent=!allValid?'예측을 완성하세요':total>wallet?'포인트 부족':ok?`예측 제출 (${fmt(total)}pt 베팅)`:' 예측 제출하기';
+}
+function g2GetBet(){const v=parseInt(document.getElementById('g2-bet-input').value);return isNaN(v)||v<100?100:v}
+function g2SubmitBet(){
+  const bet=g2GetBet(),wallet=getWallet(),total=bet*g2Picks.length;
+  if(total>wallet){alert('포인트가 부족합니다.');return}
+  setWallet(wallet-total);
+  const picks=g2Picks.map(idx=>{
+    const s=LATEST_SONGS[idx];
+    return{idx,name:s.name,artist:s.artist,album:s.album,predictEntry:g2Entry[idx],predictRank:(g2Entry[idx]?g2Rank[idx]:null),bet};
+  });
+  const submitDate=CHART_DATE;
+  const settleDate=addDays(submitDate,7);
+  const pending=loadJson(G2_PENDING_KEY);
+  pending.push({id:Date.now().toString(),submitDate,settleDate,latestDate:LATEST_DATE,picks,totalBet:total,ts:new Date().toLocaleString('ko-KR')});
+  saveJson(G2_PENDING_KEY,pending);
+  g2Picks=[];g2Entry={};g2Rank={};
+  g2RenderSongs();g2UpdateSlip();updateAllWallets();
+  let html='',maxNet=0;
+  for(const p of picks){
+    const maxPayout=p.bet*(p.predictEntry?4:1.5);
+    maxNet+=maxPayout-p.bet;
+    html+=`<div class="result-pick-row"><span class="result-pick-indicator">🕐</span><div class="result-pick-info"><div class="result-pick-name">${esc(p.name)}</div><div class="result-pick-artist">${p.predictEntry?`TOP100 진입 · 예상 ${p.predictRank}위`:'TOP100 미진입 예측'}</div></div><span class="result-pick-pts" style="color:#5A5585">-${fmt(p.bet)}pt</span></div>`;
+  }
+  showResult('예측 완료',`${settleDate} 이후 자동 정산`,html,{text:`${settleDate}에 결과를 확인하세요`,cls:'pending'},`베팅 ${fmt(total)}pt 차감 · 최대 +${fmt(Math.floor(maxNet))}pt 가능`);
+}
+function g2SettleBets(){
+  const pending=loadJson(G2_PENDING_KEY);
+  const toSettle=pending.filter(b=>b.settleDate<=CHART_DATE);
+  const remaining=pending.filter(b=>b.settleDate>CHART_DATE);
+  if(toSettle.length===0)return;
+  const settled=[];
   for(const bet of toSettle){
     const results=bet.picks.map(p=>{
-      const payout=Math.floor(p.bet*p.mult);
-      const correct=TOP10_SET.has(p.name);
+      const actualRank=DAILY_TOP100_MAP[p.name]||null;
+      const mult=g2GetMultiplier(p.predictEntry,p.predictRank,actualRank);
+      const correct=(mult!==null);
+      const payout=correct?Math.floor(p.bet*mult):0;
       if(correct)setWallet(getWallet()+payout);
-      return{...p,correct,payout};
+      return{...p,actualRank,mult,correct,payout};
     });
     const net=results.reduce((a,r)=>a+(r.correct?r.payout-r.bet:-r.bet),0);
-    settledRounds.push({mode:bet.modeLabel,period:bet.period,bet:bet.picks[0]?.bet||0,results,net,walletAfter:getWallet(),ts:new Date().toLocaleString('ko-KR'),settledDate:CHART_DATE});
+    settled.push({submitDate:bet.submitDate,settleDate:bet.settleDate,results,net,ts:new Date().toLocaleString('ko-KR')});
   }
-  const h=loadHistory();h.unshift(...settledRounds);saveHistory(h);
-  savePending(remaining);
-  updateWalletDisplay();
-  if(settledRounds.length>0)showSettlementResults(settledRounds);
-}
-
-function showSettlementResults(rounds){
-  document.getElementById('result-title').textContent='베팅 결과 정산';
-  document.getElementById('result-mode-label').textContent=`${CHART_DATE} 차트 기준 자동 정산`;
+  const h=loadJson(G2_HISTORY_KEY);h.unshift(...settled);saveJson(G2_HISTORY_KEY,h);saveJson(G2_PENDING_KEY,remaining);
+  updateAllWallets();
   let html='',totalNet=0;
-  for(const round of rounds){
-    html+=`<div class="result-round-label">${esc(round.mode)} (${esc(round.period)})</div>`;
-    for(const r of round.results){
-      const cls=r.correct?'gain':'loss';
-      const profit=r.payout-r.bet;
-      const pts=r.correct?`+${fmt(profit)}pt`:`-${fmt(r.bet)}pt`;
-      html+=`<div class="result-pick-row"><span class="result-pick-indicator">${r.correct?'✅':'❌'}</span><div class="result-pick-info"><div class="result-pick-name">${esc(r.name)}</div><div class="result-pick-artist">${r.correct?'진입!':'미진입'} · ${esc(r.artist)}</div></div><span class="result-pick-pts ${cls}">${pts}${r.correct?` (×${r.mult})`:''}</span></div>`;
+  for(const r of settled){
+    html+=`<div class="result-round-label">출시일 ${r.submitDate} → 정산 ${r.settleDate}</div>`;
+    for(const p of r.results){
+      const desc=p.predictEntry?(p.correct?`TOP100 ${p.actualRank}위 진입!`:'미진입 (예측 빗나감)'):(p.correct?'미진입 — 예측 적중!':'TOP100 진입 (예측 빗나감)');
+      html+=`<div class="result-pick-row"><span class="result-pick-indicator">${p.correct?'✅':'❌'}</span><div class="result-pick-info"><div class="result-pick-name">${esc(p.name)}</div><div class="result-pick-artist">${desc}</div></div><span class="result-pick-pts ${p.correct?'gain':'loss'}">${p.correct?'+'+fmt(p.payout-p.bet):'-'+fmt(p.bet)}pt${p.correct&&p.mult?' (×'+p.mult+')':''}</span></div>`;
     }
-    totalNet+=round.net;
+    totalNet+=r.net;
   }
-  document.getElementById('result-picks').innerHTML=html;
-  const netEl=document.getElementById('result-net');
-  netEl.textContent=totalNet>0?`전체 수익 +${fmt(totalNet)}pt`:totalNet<0?`전체 손실 ${fmt(Math.abs(totalNet))}pt`:'본전';
-  netEl.className='result-net '+(totalNet>0?'positive':totalNet<0?'negative':'zero');
-  document.getElementById('result-wallet-info').innerHTML=`잔여 포인트: <strong>${fmt(getWallet())}pt</strong>`;
-  document.getElementById('result-overlay').classList.remove('hidden');
+  const n=totalNet;
+  showResult('신곡 예측 정산',`${CHART_DATE} 일간 차트 기준 정산`,html,{text:n>0?`전체 수익 +${fmt(n)}pt`:n<0?`전체 손실 ${fmt(Math.abs(n))}pt`:'본전',cls:n>0?'positive':n<0?'negative':'zero'},`잔여 포인트: <strong>${fmt(getWallet())}pt</strong>`);
+}
+function g2RenderHistory(){
+  const h=loadJson(G2_HISTORY_KEY),pending=loadJson(G2_PENDING_KEY),wallet=getWallet();
+  const all=h.length+pending.length;
+  let html=`<div class="history-wallet-banner"><div><div class="hwb-label">현재 보유 포인트</div><div class="hwb-amount">${fmt(wallet)}pt</div></div><div style="text-align:right"><div class="hwb-label">총 라운드</div><div class="hwb-amount" style="font-size:18px">${all}회</div></div></div>`;
+  if(all===0){html+=`<div class="history-empty">아직 기록이 없습니다.<br>신곡을 선택해 예측해보세요!</div>`;document.getElementById('g2-history-container').innerHTML=html;return;}
+  for(const r of pending){
+    let ph='',maxNet=0;
+    for(const p of r.picks){const maxM=p.predictEntry?4:1.5;const maxP=Math.floor(p.bet*maxM);maxNet+=maxP-p.bet;const predStr=p.predictEntry?`진입 예측 ${p.predictRank}위`:'미진입 예측';ph+=`<div class="hc-pick-row"><span class="hc-indicator">🕐</span><span class="hc-name">${esc(p.name)}</span><span class="hc-pts" style="color:#1060C0;font-size:11px">${predStr}</span></div>`;}
+    html+=`<div class="history-card" style="border-left:3px solid #1060C0"><div class="hc-header"><span class="hc-mode" style="background:#E0EEFF;color:#1060C0">신곡 도전</span><span class="hc-period">정산: ${esc(r.settleDate)}</span><span style="font-size:10px;background:#E0EEFF;color:#1060C0;padding:2px 6px;border-radius:8px;font-weight:700">대기중</span><span class="hc-time">${esc(r.ts)}</span></div>${ph}<div class="hc-total" style="color:#1060C0">최대 +${fmt(maxNet)}pt 가능</div></div>`;
+  }
+  for(const r of h){
+    let ph='';
+    for(const p of r.results){ph+=`<div class="hc-pick-row"><span class="hc-indicator">${p.correct?'✅':'❌'}</span><span class="hc-name">${esc(p.name)}</span><span class="hc-pts ${p.correct?'gain':'loss'}">${p.correct?'+'+fmt(p.payout-p.bet):'-'+fmt(p.bet)}pt${p.correct&&p.mult?' ×'+p.mult:''}</span></div>`;}
+    const nc=r.net>0?'positive':r.net<0?'negative':'';
+    html+=`<div class="history-card"><div class="hc-header"><span class="hc-mode" style="background:#E0EEFF;color:#1060C0">신곡 도전</span><span class="hc-period">${esc(r.submitDate)}</span><span class="hc-time">${esc(r.ts)}</span></div>${ph}<div class="hc-total ${nc}">${r.net>0?'+'+fmt(r.net):fmt(r.net)}pt</div></div>`;
+  }
+  document.getElementById('g2-history-container').innerHTML=html;
 }
 
-function dismissResult(){
-  document.getElementById('result-overlay').classList.add('hidden');
-  document.getElementById('result-title').textContent='결과 확인';
-}
-
-// ── History ───────────────────────────────────────────────
-function renderHistory(){
-  const h=loadHistory(),wallet=getWallet(),pending=loadPending();
-  const container=document.getElementById('history-container');
-  const allCount=h.length+pending.length;
-  let html=`<div class="history-wallet-banner"><div><div class="hwb-label">현재 보유 포인트</div><div class="hwb-amount">${fmt(wallet)}pt</div></div><div style="text-align:right"><div class="hwb-label">총 라운드</div><div class="hwb-amount" style="font-size:18px">${allCount}회</div></div></div>`;
-  if(allCount===0){
-    html+=`<div class="history-empty">아직 예측 기록이 없습니다.<br>차트에서 곡을 선택해 예측해보세요!</div>`;
-    container.innerHTML=html;return;
-  }
-  for(const round of pending){
-    let pHtml='',maxNet=0;
-    for(const p of round.picks){const payout=Math.floor(p.bet*p.mult);maxNet+=payout-p.bet;pHtml+=`<div class="hc-pick-row"><span class="hc-indicator">🕐</span><span class="hc-name">${esc(p.name)}</span><span class="hc-pts" style="color:#5A5585">-${fmt(p.bet)}pt</span></div>`;}
-    html+=`<div class="history-card" style="border-left:3px solid #C46A00"><div class="hc-header"><span class="hc-mode" style="background:#FFF0DC;color:#8B5010">${esc(round.modeLabel)}</span><span class="hc-period">${esc(round.period)}</span><span style="font-size:10px;background:#FFF0DC;color:#C46A00;padding:2px 6px;border-radius:8px;font-weight:700;flex-shrink:0">결과 대기중</span><span class="hc-time">${esc(round.ts)}</span></div>${pHtml}<div class="hc-total" style="color:#C46A00">최대 +${fmt(maxNet)}pt 가능</div></div>`;
-  }
-  for(const round of h){
-    let pHtml='';
-    for(const r of round.results){
-      const cls=r.correct?'gain':'loss';
-      const profit=r.payout!=null?r.payout-r.bet:r.bet;
-      const pts=r.correct?`+${fmt(profit)}pt`:`-${fmt(r.bet)}pt`;
-      const multLabel=r.correct&&r.mult?` ×${r.mult}`:'';
-      pHtml+=`<div class="hc-pick-row"><span class="hc-indicator">${r.correct?'✅':'❌'}</span><span class="hc-name">${esc(r.name)}</span><span class="hc-pts ${cls}">${pts}${multLabel}</span></div>`;
-    }
-    const netCls=round.net>0?'positive':round.net<0?'negative':'';
-    const netStr=round.net>0?`+${fmt(round.net)}pt`:`${fmt(round.net)}pt`;
-    html+=`<div class="history-card"><div class="hc-header"><span class="hc-mode">${esc(round.mode)}</span><span class="hc-period">${esc(round.period)}</span><span class="hc-time">${esc(round.ts)}</span></div>${pHtml}<div class="hc-total ${netCls}">${netStr}</div></div>`;
-  }
-  container.innerHTML=html;
-}
-
-// ── Init chart type buttons ───────────────────────────────
-function renderChartTypeBtns(){
-  const bar=document.getElementById('chart-type-bar');
-  bar.innerHTML=Object.entries(CHART_MODES).map(([key,m])=>
-    `<button class="ct-btn${key===currentMode?' active':''}" data-mode="${key}" onclick="setMode('${key}')">${esc(m.label)}<span class="ct-period">${esc(m.period)}</span></button>`
-  ).join('');
-}
-
-// ── Bootstrap: load chart-data.json ──────────────────────
-async function init(){
-  try{
-    const res=await fetch('./chart-data.json?v='+Date.now());
-    if(!res.ok)throw new Error('HTTP '+res.status);
-    const data=await res.json();
-
-    CHART_DATE=data.chartDate||'';
-    SONGS=data.songs||[];
-    TOP10_SET=new Set(SONGS.map(s=>s[1]));
-
-    CHART_MODES={
-      daily:{label:'일간',period:data.dayLabel||'오늘',songs:data.dailySongs||[],topN:10},
-      weekly:{label:'주간',period:data.weekLabel||'이번 주',songs:data.weeklySongs||[],topN:10},
-    };
-
-    // 날짜 표시
-    const kd=CHART_DATE?CHART_DATE.replace(/-/g,'.'):'';
-    document.getElementById('game-sub').textContent=`멜론 차트 예측 게임 · ${kd}`;
-    document.getElementById('answer-date').textContent=kd;
-
-  }catch(e){
-    console.warn('chart-data.json 로드 실패:', e);
-    document.getElementById('error-banner').style.display='block';
-    // 기본값으로 빈 모드 유지
-    CHART_MODES={daily:{label:'일간',period:'오늘',songs:[],topN:10},weekly:{label:'주간',period:'이번 주',songs:[],topN:10}};
-  }
-
-  renderChartTypeBtns();
-  settlePendingBets();
-  updateWalletDisplay();
-  renderChart();
-  updateSlip();
-
-  // 로딩 화면 제거
-  document.getElementById('loading-screen').classList.add('hidden');
-  document.getElementById('app').style.display='';
-}
-
-init();
+// ===== INIT =====
+g1SettlePendingBets();
+g2SettleBets();
+updateAllWallets();
 </script>
-</body>
-</html>
