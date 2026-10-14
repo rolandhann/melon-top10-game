@@ -658,7 +658,7 @@ function g2UpdateSlip(){
           <button class="g2-toggle${entry===true?' active-yes':''}" onclick="g2SetEntry(${idx},true);g2UpdateSlip()">진입</button>
           <button class="g2-toggle${entry===false?' active-no':''}" onclick="g2SetEntry(${idx},false);g2UpdateSlip()">미진입</button>
         </div>
-        ${entry===true?`<div class="g2-rank-wrap"><input class="g2-rank-input" type="number" inputmode="numeric" pattern="[0-9]*" min="1" max="100" value="${rank||50}" placeholder="순위" oninput="g2SetRank(${idx},this.value);g2UpdateSlip()"><span class="g2-rank-lbl">위 예상</span></div>`:''}
+        ${entry===true?`<div class="g2-rank-wrap"><input class="g2-rank-input" type="number" inputmode="numeric" pattern="[0-9]*" min="1" max="100" value="${rank||50}" placeholder="순위" oninput="g2SetRank(${idx},this.value)" onchange="g2UpdateSlip()" onclick="event.stopPropagation()"><span class="g2-rank-lbl">위 예상</span></div>`:''}
         <span class="g2-payout-lbl">${validEntry?`최대 ×${entry?4:1.5}`:''}</span>
       </div>
     </div>`;
